@@ -3,7 +3,7 @@ project(ft_nm_otool C)
 
 set(CMAKE_C_STANDARD 99)
 
-#add_executable(ft_nm_otool main.c)
+#add_executable(${PROJECT_NAME} main.c)
 
 set(NM_DIR "nm")
 include_directories(${NM_DIR})
