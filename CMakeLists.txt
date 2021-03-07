@@ -20,3 +20,5 @@ add_subdirectory(${LIBSHARE_DIR})
 set(LIBFT_DIR "libft")
 include_directories(${LIBFT_DIR})
 add_subdirectory(${LIBFT_DIR})
+
+add_custom_target(${PROJECT_NAME} DEPENDS ft share nm otool)
