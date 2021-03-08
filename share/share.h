@@ -12,7 +12,7 @@
 #include "ft_vec.h"
 #define N_BIN_TYPES 1
 #define N_ARCH_TYPES 2
-#define N_MAGICK_NUMBERS 2
+#define N_MAGIC_NUMBERS 2
 
 extern int g_error_code;
 
@@ -27,17 +27,19 @@ typedef enum	e_arch_type{
 	e_64
 }				t_arch_type;
 
-typedef struct	s_magick_map{
+typedef struct	s_magic_map{
 	enum e_arch_type	arch;
-	uint32_t			magick[N_MAGICK_NUMBERS]
-}				t_magick_map;
+	size_t				size;
+	uint32_t			magic[N_MAGIC_NUMBERS];
+}				t_magic_map;
 
 typedef struct s_binary_info{
-	int			fd;
-	struct stat file_stat;
-	void 		*map_start;
-	enum e_bin_type type;
-	int			arch;
+	int					fd;
+	struct stat 		file_stat;
+	void 				*map_start;
+	enum e_bin_type		type;
+	enum e_arch_type	arch;
+	size_t				magic;
 }				t_binary_info;
 
 typedef struct stat t_stat;
@@ -47,10 +49,12 @@ typedef struct segment_command_64 t_segment_cmd_64;
 typedef struct section_64 t_section_64;
 
 void			print_error(const char *name, const char *arg);
-int				parse_magick(t_binary_info *binary_info);
+int				parse_magic(t_binary_info *binary_info);
 t_binary_info	*get_binary_info(const char *path);
 void 			del_binary_info(t_binary_info **binary_info);
 
 t_vec			*get_segments(void *map_start, char type);
+
+# define MAGIC_ERROR (128 + 1)
 
 #endif //SHARE_H

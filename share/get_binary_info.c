@@ -3,6 +3,7 @@
 //
 
 #include "share.h"
+#include "ft_mem.h"
 #include <errno.h>
 
 t_binary_info *get_binary_info(const char *path)
@@ -16,11 +17,12 @@ t_binary_info *get_binary_info(const char *path)
 		g_error_code = errno;
 		return (NULL);
 	}
-	binary_info = malloc(sizeof(t_binary_info));
+	binary_info = ft_xmalloc(sizeof(t_binary_info));
 	stat(path, &(binary_info->file_stat));
 	binary_info->map_start = mmap(0, binary_info->file_stat.st_size, \
 		PROT_READ, MAP_SHARED, fd, 0);
-	if (parse_magick(binary_info->map_start))
+	ft_bzero(&binary_info->magic, sizeof(size_t));
+	if (parse_magic(binary_info))
 	{
 		munmap(binary_info->map_start, binary_info->file_stat.st_size);
 		free(binary_info);

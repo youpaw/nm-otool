@@ -5,7 +5,7 @@ set(CMAKE_C_STANDARD 99)
 
 include_directories(.)
 
-ADD_LIBRARY(share STATIC parse_magick.c get_binary_info.c print_error.c get_segments.c del_binary_info.c)
+ADD_LIBRARY(share STATIC parse_magic.c get_binary_info.c print_error.c get_segments.c del_binary_info.c)
 
 target_link_libraries(share ft)
 target_include_directories(share PUBLIC .)
