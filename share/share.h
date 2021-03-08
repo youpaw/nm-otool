@@ -13,6 +13,7 @@
 #define N_BIN_TYPES 1
 #define N_ARCH_TYPES 2
 #define N_MAGIC_NUMBERS 2
+#define SEGMENTS_VEC_CAPACITY 20
 
 extern int g_error_code;
 
@@ -43,9 +44,12 @@ typedef struct s_binary_info{
 }				t_binary_info;
 
 typedef struct stat t_stat;
+typedef struct mach_header t_mach_header_32;
 typedef struct mach_header_64 t_mach_header_64;
 typedef struct load_command t_load_cmd;
+typedef struct segment_command t_segment_cmd_32;
 typedef struct segment_command_64 t_segment_cmd_64;
+typedef struct section t_section_32;
 typedef struct section_64 t_section_64;
 
 void			print_error(const char *name, const char *arg);
@@ -53,7 +57,9 @@ int				parse_magic(t_binary_info *binary_info);
 t_binary_info	*get_binary_info(const char *path);
 void 			del_binary_info(t_binary_info **binary_info);
 
-t_vec			*get_segments(void *map_start, char type);
+t_vec			*get_load_cmds_mach_o_32(void *map_start, char cmd);
+t_vec			*get_load_cmds_mach_o_64(void *map_start, char cmd);
+t_vec			*get_load_cmds(t_binary_info *binary_info, char cmd);
 
 # define MAGIC_ERROR (128 + 1)
 

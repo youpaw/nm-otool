@@ -21,20 +21,17 @@ static void exec(const char *name, const char *path)
 	t_symtab_cmd		*symtab_cmd;
 	t_symbol_address 	**symbol_map;
 
+	symbol_map = NULL;
 	if (!(binary_info = get_binary_info(path)))
 	{
 		print_error(name, path);
 		return ;
 	}
-	load_cmds = get_segments(binary_info, 0);
-	if (!(symtab_cmd = get_symtab_cmd(load_cmds)))
-	{
-		free_mem(&binary_info, &load_cmds, NULL);
-		return ;
-	}
-	symbol_map = get_symbol_map(load_cmds);
+	load_cmds = get_load_cmds(binary_info, -1);
+	if ((symtab_cmd = get_symtab_cmd(load_cmds)))
+		symbol_map = get_symbol_map(load_cmds);
 	print_symtab(symbol_map, symtab_cmd);
-	free_mem(&binary_info, &load_cmds, &symbol_map);
+	free_mem(&binary_info, &load_cmds, &symbol_map); //maybe
 }
 
 int main(int ac, const char **av)
