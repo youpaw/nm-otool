@@ -9,6 +9,7 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 #include <fcntl.h>
+#include <stdio.h> //TODO add custom printf
 #include "ft_vec.h"
 #define N_BIN_TYPES 1
 #define N_ARCH_TYPES 2
@@ -16,8 +17,6 @@
 #define SEGMENTS_VEC_CAPACITY 20
 
 extern int g_error_code;
-
-
 
 typedef enum	e_bin_type{
 	e_mach_o
