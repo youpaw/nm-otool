@@ -9,7 +9,6 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 #include <fcntl.h>
-#include <stdio.h> //TODO add custom printf
 #include "ft_vec.h"
 #define N_BIN_TYPES 1
 #define N_ARCH_TYPES 2
@@ -42,7 +41,6 @@ typedef struct s_binary_info{
 	size_t				magic;
 }				t_binary_info;
 
-typedef struct stat t_stat;
 typedef struct mach_header t_mach_header_32;
 typedef struct mach_header_64 t_mach_header_64;
 typedef struct load_command t_load_cmd;
