@@ -6,7 +6,7 @@
 
 t_vec			*get_load_cmds(t_binary_info *binary_info, char cmd)
 {
-	t_vec	*(*segment_parser_handlers[N_BIN_TYPES][N_ARCH_TYPES]) \
+	static t_vec	*(*segment_parser_handlers[N_BIN_TYPES][N_ARCH_TYPES]) \
 		(void *, char) = {
 			{&get_load_cmds_mach_o_32, &get_load_cmds_mach_o_64}
 	};
