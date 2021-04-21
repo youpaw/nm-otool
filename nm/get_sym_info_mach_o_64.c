@@ -41,6 +41,7 @@ static t_sym_info *get_sym_info(t_nlist_64 *sym_table, char *str_table, \
 	sym_info = (t_sym_info *) ft_xmalloc(sizeof(t_sym_info));
 	sym_info->value = (size_t) sym_table->n_value;
 	sym_info->nsect = sym_table->n_sect;
+	sym_info->ntype = sym_table->n_type;
 	sym_info->c = get_symbol_char(sym_table->n_type, sym_table->n_sect, sects);
 	sym_info->str = str_table + sym_table->n_un.n_strx;
 	return (sym_info);

@@ -6,28 +6,27 @@
 #include "ft_str.h"
 #include "ft_char.h"
 
-static char get_section_char(uint8_t type, \
-	const char *segname, const char *sectname)
+static char get_section_char(uint8_t type, const char *sectname)
 {
 	static const t_sym_map sym_map[N_SYM_MAP] = {
-			{SEG_TEXT, SECT_TEXT, 'T'}, {SEG_DATA, SECT_DATA, 'D'},
-			{SEG_DATA, SECT_COMMON, 'S'}
+			{SECT_TEXT, 'T'}, {SECT_DATA, 'D'}, {SECT_BSS, 'B'}
 	};
 	uint8_t cnt;
 
 	cnt = 0;
 	while (cnt < N_SYM_MAP)
 	{
-		if (!ft_strncmp(sym_map[cnt].seg_name, segname, SYM_NAME_SIZE) && \
-			!ft_strncmp(sym_map[cnt].sect_name, sectname, SYM_NAME_SIZE))
+		if (!ft_strncmp(sym_map[cnt].sect_name, sectname, SYM_NAME_SIZE))
 		{
-			if (!(type & N_EXT || type & N_PEXT))
+			if (!(type & N_EXT))
 				return ((char) ft_tolower(sym_map[cnt].sym));
 			return (sym_map[cnt].sym);
 		}
 		cnt++;
 	}
-	return ('?');
+	if (!(type & N_EXT))
+		return ('s');
+	return ('S');
 }
 
 static char get_known_char(uint8_t type_mask)
@@ -50,7 +49,7 @@ char get_symbol_char(uint8_t type, uint8_t n_sect, t_vec *sects)
 	if (n_sect != NO_SECT)
 	{
 		ft_vec_get_at(&sect, sects, n_sect - 1);
-		return (get_section_char(type, sect->segname, sect->sectname));
+		return (get_section_char(type, sect->sectname));
 	}
 	else
 	{

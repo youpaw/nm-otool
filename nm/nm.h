@@ -14,12 +14,12 @@
 typedef struct	s_sym_info{
 	size_t	value;
 	uint8_t nsect;
+	uint8_t ntype;
 	char	c;
 	char	*str;
 }				t_sym_info;
 
 typedef struct	s_sym_map{
-	char		seg_name[SYM_NAME_SIZE];
 	char		sect_name[SYM_NAME_SIZE];
 	char		sym;
 }				t_sym_map;
@@ -39,5 +39,7 @@ t_sym_info	**get_sym_info_table_mach_o_32(void *map_start, \
 	t_symtab_cmd *symtab_cmd, t_vec *load_cmds);
 t_sym_info	**get_sym_info_table_mach_o_64(void *map_start, \
 	t_symtab_cmd *symtab_cmd, t_vec *load_cmds);
+
+int 		cmp_sym_info(const t_sym_info *l, const t_sym_info *r);
 
 #endif //NM_H
