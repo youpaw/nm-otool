@@ -65,7 +65,7 @@ t_sym_info **get_sym_info_table_mach_o_32(void *map_start, \
 	while (syms_cnt < symtab_cmd->nsyms)
 	{
 		sym_info_table[syms_cnt] = get_sym_info(sym_table, str_table, sects);
-		sym_table = (t_nlist_32 *)((char *)sym_table + sizeof(t_nlist_64));
+		sym_table = (t_nlist_32 *)((char *)sym_table + sizeof(t_nlist_32));
 		syms_cnt++;
 	}
 	ft_vec_del(&sects);

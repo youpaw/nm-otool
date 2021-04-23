@@ -6,8 +6,13 @@
 #include "ft_arr.h"
 #include <stdio.h>
 
-static void print_sym_info_table(t_sym_info **sym_info_table, uint32_t nsyms)
+static void print_sym_info_table(t_sym_info **sym_info_table, uint32_t nsyms,
+								 t_arch_type arch)
 {
+	static const char *print_fmt[N_ARCH_TYPES] = \
+		{"%8s %c %s\n", "%16s %c %s\n"};
+	static const char *print_sec_fmt[N_ARCH_TYPES] = \
+		{"%08zx %c %s\n", "%08zx %c %s\n"};
 	uint32_t cnt;
 
 	cnt = 0;
@@ -16,10 +21,10 @@ static void print_sym_info_table(t_sym_info **sym_info_table, uint32_t nsyms)
 		if (!(sym_info_table[cnt]->ntype & N_STAB))
 		{
 			if (sym_info_table[cnt]->nsect == NO_SECT)
-				printf("%16s %c %s\n", "", sym_info_table[cnt]->c, \
+				printf(print_fmt[arch], "", sym_info_table[cnt]->c, \
 				sym_info_table[cnt]->str);
 			else
-				printf("%016zx %c %s\n", sym_info_table[cnt]->value, \
+				printf(print_sec_fmt[arch], sym_info_table[cnt]->value, \
 				sym_info_table[cnt]->c, sym_info_table[cnt]->str);
 		}
 		cnt++;
@@ -40,6 +45,6 @@ void print_symtab(t_symtab_cmd *symtab_cmd, t_vec *load_cmds, \
 	ft_arr_quick_sort((void **) sym_info_table, symtab_cmd->nsyms, \
 
 					  (int (*)(const void *, const void *)) &cmp_sym_info); // need to fix
-	print_sym_info_table(sym_info_table, symtab_cmd->nsyms);
+	print_sym_info_table(sym_info_table, symtab_cmd->nsyms, binary_info->arch);
 	ft_narr_del((void **) sym_info_table, symtab_cmd->nsyms, NULL);
 }
