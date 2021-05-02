@@ -7,10 +7,10 @@
 t_vec			*get_load_cmds(t_binary_info *binary_info, char cmd)
 {
 	static t_vec	*(*segment_parser_handlers[N_BIN_TYPES][N_ARCH_TYPES]) \
-		(void *, char) = {
+		(void *, size_t, char) = {
 			{&get_load_cmds_mach_o_32, &get_load_cmds_mach_o_64}
 	};
-	//TODO handle file size while loading
+	//TODO maybe merge mach_o?
 	return (segment_parser_handlers[binary_info->type][binary_info->arch]\
-		(binary_info->map_start, cmd));
+		(binary_info->map_start, binary_info->file_stat.st_size, cmd));
 }

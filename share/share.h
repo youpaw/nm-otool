@@ -32,7 +32,7 @@ typedef struct	s_magic_map{
 	uint32_t			magic[N_MAGIC_NUMBERS];
 }				t_magic_map;
 
-typedef struct s_binary_info{
+typedef struct	s_binary_info{
 	int					fd;
 	struct stat 		file_stat;
 	void 				*map_start;
@@ -40,6 +40,11 @@ typedef struct s_binary_info{
 	enum e_arch_type	arch;
 	size_t				magic;
 }				t_binary_info;
+
+typedef struct	s_check_sizes{
+	size_t cmds;
+	size_t full;
+}				t_check_sizes;
 
 typedef struct mach_header t_mach_header_32;
 typedef struct mach_header_64 t_mach_header_64;
@@ -54,9 +59,13 @@ int				parse_magic(t_binary_info *binary_info);
 t_binary_info	*get_binary_info(const char *path);
 void 			del_binary_info(t_binary_info **binary_info);
 
-t_vec			*get_load_cmds_mach_o_32(void *map_start, char cmd);
-t_vec			*get_load_cmds_mach_o_64(void *map_start, char cmd);
+t_vec			*get_load_cmds_mach_o_32(void *map_start, size_t bin_size, \
+	char cmd);
+t_vec			*get_load_cmds_mach_o_64(void *map_start, size_t bin_size, \
+	char cmd);
 t_vec			*get_load_cmds(t_binary_info *binary_info, char cmd);
+int				validate_load_cmds(t_load_cmd *lc, size_t bin_size, \
+	t_check_sizes *check);
 
 # define MAGIC_ERROR (128 + 1)
 

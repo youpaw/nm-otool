@@ -17,7 +17,9 @@ static int get_magic(t_binary_info *binary_info, int n_bin, int n_arch)
 	n_magic = 0;
 	while (n_magic < N_MAGIC_NUMBERS)
 	{
-		magic_size = magic_map[n_bin][n_arch].size;;
+		magic_size = magic_map[n_bin][n_arch].size;
+		if (binary_info->file_stat.st_size < magic_size)
+			return (1);
 		ft_memcpy(&binary_info->magic, binary_info->map_start, magic_size);
 		if (magic_map[n_bin][n_arch].magic[n_magic] == binary_info->magic)
 			return (0);
