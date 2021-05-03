@@ -24,21 +24,29 @@ typedef struct	s_sym_map{
 	char		sym;
 }				t_sym_map;
 
+typedef struct	s_sym_tab
+{
+	char *str_tab;
+	void *tab;
+}				t_sym_tab;
+
 typedef struct symtab_command t_symtab_cmd;
 typedef struct nlist t_nlist_32;
 typedef struct nlist_64 t_nlist_64;
 
 t_symtab_cmd		*get_symtab_cmd(t_vec *load_cmds);
 
-void		print_symtab(t_symtab_cmd *symtab_cmd, t_vec *load_cmds, \
+int 		print_symtab(t_symtab_cmd *symtab_cmd, t_vec *load_cmds, \
 	t_binary_info *binary_info);
 
 char		get_symbol_char(uint8_t type, uint8_t n_sect, t_vec *sects);
 
-t_sym_info	**get_sym_info_table_mach_o_32(void *map_start, \
+t_sym_info	**get_sym_info_table_mach_o_32(t_binary_info *binary_info, \
 	t_symtab_cmd *symtab_cmd, t_vec *load_cmds);
-t_sym_info	**get_sym_info_table_mach_o_64(void *map_start, \
+t_sym_info	**get_sym_info_table_mach_o_64(t_binary_info *binary_info, \
 	t_symtab_cmd *symtab_cmd, t_vec *load_cmds);
+t_vec		*get_sections_mach_o_32(t_vec *load_cmds);
+t_vec		*get_sections_mach_o_64(t_vec *load_cmds);
 
 int 		cmp_sym_info(const t_sym_info *l, const t_sym_info *r);
 

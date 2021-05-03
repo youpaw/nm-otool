@@ -45,7 +45,7 @@ char get_symbol_char(uint8_t type, uint8_t n_sect, t_vec *sects)
 {
 	t_section_64	*sect;
 	uint8_t			type_mask;
-
+	//Todo add checks for str size and nsect
 	if (n_sect != NO_SECT)
 	{
 		ft_vec_get_at(&sect, sects, n_sect - 1);

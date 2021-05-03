@@ -5,34 +5,6 @@
 #include "nm.h"
 #include "ft_mem.h"
 
-static t_vec *get_sects(t_vec *load_cmds)
-{
-	t_load_cmd			*lc;
-	t_segment_cmd_64	*seg;
-	t_section_64		*sect;
-	size_t				cnt[2];
-	t_vec				*sects;
-
-	sects = ft_vec_new(SECTIONS_VEC_CAPACITY, sizeof(void *), NULL);
-	cnt[0] = -1;
-	while (++cnt[0] < load_cmds->size)
-	{
-		ft_vec_get_at(&lc, load_cmds, cnt[0]);
-		if (lc->cmd == LC_SEGMENT_64)
-			seg = (t_segment_cmd_64 *) lc;
-		else
-			continue ;
-		cnt[1] = -1;
-		sect = (t_section_64 *) ((char *) seg + sizeof(t_segment_cmd_64));
-		while (++cnt[1] < seg->nsects)
-		{
-			ft_vec_push(sects, &sect);
-			sect = (t_section_64 *) ((char *) sect + sizeof(t_section_64));
-		}
-	}
-	return (sects);
-}
-
 static t_sym_info *get_sym_info(t_nlist_64 *sym_table, char *str_table, \
 	t_vec *sects)
 {
@@ -47,7 +19,7 @@ static t_sym_info *get_sym_info(t_nlist_64 *sym_table, char *str_table, \
 	return (sym_info);
 }
 
-t_sym_info **get_sym_info_table_mach_o_64(void *map_start, \
+t_sym_info **get_sym_info_table_mach_o_64(t_binary_info *binary_info, \
 	t_symtab_cmd *symtab_cmd, t_vec *load_cmds)
 {
 	t_sym_info	**sym_info_table;
@@ -55,12 +27,13 @@ t_sym_info **get_sym_info_table_mach_o_64(void *map_start, \
 	char		*str_table;
 	uint32_t	syms_cnt;
 	t_vec		*sects;
-
+	//Todo copy 32-bit
+	if (!(get_sections_mach_o_64(load_cmds)))
+		return (NULL);
 	sym_info_table = (t_sym_info **) ft_xmalloc(sizeof(t_sym_info*) * \
 	symtab_cmd->nsyms);
-	sects = get_sects(load_cmds);
-	sym_table = (t_nlist_64 *) ((char *) map_start + symtab_cmd->symoff);
-	str_table = (char *) map_start + symtab_cmd->stroff;
+	sym_table = (t_nlist_64 *) ((char *) binary_info + symtab_cmd->symoff);
+	str_table = (char *) binary_info + symtab_cmd->stroff;
 	syms_cnt = 0;
 	while (syms_cnt < symtab_cmd->nsyms)
 	{
