@@ -6,7 +6,7 @@
 #include "ft_str.h"
 #include "ft_char.h"
 
-static char get_section_char(uint8_t type, const char *sectname)
+static char			get_section_char(uint8_t type, const char *sectname)
 {
 	static const t_sym_map sym_map[N_SYM_MAP] = {
 			{SECT_TEXT, 'T'}, {SECT_DATA, 'D'}, {SECT_BSS, 'B'}
@@ -29,7 +29,7 @@ static char get_section_char(uint8_t type, const char *sectname)
 	return ('S');
 }
 
-static char get_known_char(uint8_t type_mask)
+static char			get_known_char(uint8_t type_mask)
 {
 	if (type_mask & N_ABS)
 		return ('A');
@@ -41,19 +41,21 @@ static char get_known_char(uint8_t type_mask)
 		return ('U');
 }
 
-char get_symbol_char(uint8_t type, uint8_t n_sect, t_vec *sects)
+int					get_symbol_char(uint8_t type, uint8_t n_sect, t_vec *sects,\
+	char *c)
 {
 	t_section_64	*sect;
 	uint8_t			type_mask;
-	//Todo add checks for str size and nsect
 	if (n_sect != NO_SECT)
 	{
-		ft_vec_get_at(&sect, sects, n_sect - 1);
-		return (get_section_char(type, sect->sectname));
+		if (ft_vec_get_at(&sect, sects, n_sect - 1))
+			return (1);
+		*c = get_section_char(type, sect->sectname);
 	}
 	else
 	{
 		type_mask = type & N_TYPE;
-		return (get_known_char(type_mask));
+		*c = get_known_char(type_mask);
 	}
+	return (0);
 }

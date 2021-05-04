@@ -12,7 +12,7 @@ static void print_sym_info_table(t_sym_info **sym_info_table, uint32_t nsyms,
 	static const char *print_fmt[N_ARCH_TYPES] = \
 		{"%8s %c %s\n", "%16s %c %s\n"};
 	static const char *print_sec_fmt[N_ARCH_TYPES] = \
-		{"%08zx %c %s\n", "%08zx %c %s\n"};
+		{"%08zx %c %s\n", "%016zx %c %s\n"};
 	uint32_t cnt;
 
 	cnt = 0;
@@ -47,6 +47,6 @@ int	print_symtab(t_symtab_cmd *symtab_cmd, t_vec *load_cmds, \
 	ft_arr_quick_sort((void **) sym_info_table, symtab_cmd->nsyms, \
 					  (int (*)(const void *, const void *)) &cmp_sym_info);
 	print_sym_info_table(sym_info_table, symtab_cmd->nsyms, binary_info->arch);
-	ft_narr_del((void **) sym_info_table, symtab_cmd->nsyms, NULL);
+	ft_narr_del((void ***) &sym_info_table, symtab_cmd->nsyms, NULL);
 	return (0);
 }

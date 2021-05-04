@@ -17,6 +17,8 @@ static void exec(const char *name, const char *path)
 	t_vec				*load_cmds;
 	t_symtab_cmd		*symtab_cmd;
 
+	load_cmds = NULL;
+	binary_info = NULL;
 	if (!(binary_info = get_binary_info(path)) || \
 		!(load_cmds = get_load_cmds(binary_info, -1)))
 	{

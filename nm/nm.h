@@ -39,7 +39,7 @@ t_symtab_cmd		*get_symtab_cmd(t_vec *load_cmds);
 int 		print_symtab(t_symtab_cmd *symtab_cmd, t_vec *load_cmds, \
 	t_binary_info *binary_info);
 
-char		get_symbol_char(uint8_t type, uint8_t n_sect, t_vec *sects);
+int get_symbol_char(uint8_t type, uint8_t n_sect, t_vec *sects, char *c);
 
 t_sym_info	**get_sym_info_table_mach_o_32(t_binary_info *binary_info, \
 	t_symtab_cmd *symtab_cmd, t_vec *load_cmds);

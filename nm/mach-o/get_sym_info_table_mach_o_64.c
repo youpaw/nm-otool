@@ -4,43 +4,69 @@
 
 #include "nm.h"
 #include "ft_mem.h"
+#include "ft_arr.h"
 
-static t_sym_info *get_sym_info(t_nlist_64 *sym_table, char *str_table, \
-	t_vec *sects)
+static t_sym_info	*get_sym_info(t_nlist_64 *sym_table, char *str_table, \
+	uint32_t stroff, size_t file_size, t_vec *sects)
 {
 	t_sym_info		*sym_info;
+	char			c;
 
+	if (file_size < (stroff + sym_table->n_un.n_strx))
+		return (NULL);
+	if (get_symbol_char(sym_table->n_type, sym_table->n_sect, sects, &c))
+		return (NULL);
 	sym_info = (t_sym_info *) ft_xmalloc(sizeof(t_sym_info));
 	sym_info->value = (size_t) sym_table->n_value;
 	sym_info->nsect = sym_table->n_sect;
 	sym_info->ntype = sym_table->n_type;
-	sym_info->c = get_symbol_char(sym_table->n_type, sym_table->n_sect, sects);
+	sym_info->c = c;
 	sym_info->str = str_table + sym_table->n_un.n_strx;
 	return (sym_info);
 }
 
-t_sym_info **get_sym_info_table_mach_o_64(t_binary_info *binary_info, \
+static int			get_sym_tab(t_binary_info *bin_info, \
+	t_symtab_cmd *symtab_cmd, t_sym_tab *sym_tab)
+{
+	size_t			sym_table_size;
+	size_t			file_size;
+
+	file_size = bin_info->file_stat.st_size;
+	sym_table_size = sizeof(t_nlist_64);
+	if (file_size < symtab_cmd->symoff || \
+		file_size < symtab_cmd->stroff || \
+		file_size < (symtab_cmd->symoff + (symtab_cmd->nsyms * sym_table_size)))
+		return (1);
+	sym_tab->tab = (char *) bin_info->map_start + symtab_cmd->symoff;
+	sym_tab->str_tab = (char *) bin_info->map_start + symtab_cmd->stroff;
+	return (0);
+}
+
+t_sym_info			**get_sym_info_table_mach_o_64(t_binary_info *binary_info, \
 	t_symtab_cmd *symtab_cmd, t_vec *load_cmds)
 {
-	t_sym_info	**sym_info_table;
-	t_nlist_64	*sym_table;
-	char		*str_table;
-	uint32_t	syms_cnt;
-	t_vec		*sects;
-	//Todo copy 32-bit
-	if (!(get_sections_mach_o_64(load_cmds)))
+	t_sym_info		**sym_info_table;
+	t_sym_tab		stab;
+	uint32_t		cnt;
+	t_vec			*sects;
+
+	sects = get_sections_mach_o_64(load_cmds);
+	if (!sects)
 		return (NULL);
 	sym_info_table = (t_sym_info **) ft_xmalloc(sizeof(t_sym_info*) * \
-	symtab_cmd->nsyms);
-	sym_table = (t_nlist_64 *) ((char *) binary_info + symtab_cmd->symoff);
-	str_table = (char *) binary_info + symtab_cmd->stroff;
-	syms_cnt = 0;
-	while (syms_cnt < symtab_cmd->nsyms)
-	{
-		sym_info_table[syms_cnt] = get_sym_info(sym_table, str_table, sects);
-		sym_table = (t_nlist_64 *)((char *)sym_table + sizeof(t_nlist_64));
-		syms_cnt++;
-	}
+		symtab_cmd->nsyms);
+	cnt = -1;
+	if (!get_sym_tab(binary_info, symtab_cmd, &stab))
+		while (++cnt < symtab_cmd->nsyms)
+		{
+			sym_info_table[cnt] = get_sym_info(stab.tab, stab.str_tab,\
+			symtab_cmd->stroff, binary_info->file_stat.st_size, sects);
+			if (!sym_info_table[cnt])
+				break ;
+			stab.tab = (void *) ((char *) stab.tab + sizeof(t_nlist_64));
+		}
+	if (cnt < symtab_cmd->nsyms)
+		ft_narr_del((void ***) &sym_info_table, symtab_cmd->nsyms, NULL);
 	ft_vec_del(&sects);
 	return (sym_info_table);
 }
