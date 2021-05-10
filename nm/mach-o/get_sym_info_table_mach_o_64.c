@@ -28,14 +28,13 @@ static t_sym_info	*get_sym_info(t_nlist_64 *sym_table, char *str_table, \
 static int			get_sym_tab(t_binary_info *bin_info, \
 	t_symtab_cmd *symtab_cmd, t_sym_tab *sym_tab)
 {
-	size_t			sym_table_size;
 	size_t			file_size;
 
 	file_size = bin_info->file_stat.st_size;
-	sym_table_size = sizeof(t_nlist_64);
-	if (file_size < symtab_cmd->symoff || \
-		file_size < symtab_cmd->stroff || \
-		file_size < (symtab_cmd->symoff + (symtab_cmd->nsyms * sym_table_size)))
+	if (file_size < (symtab_cmd->symoff + \
+		(symtab_cmd->nsyms * sizeof(t_nlist_64))))
+		return (1);
+	if (file_size < (symtab_cmd->stroff + symtab_cmd->strsize))
 		return (1);
 	sym_tab->tab = (char *) bin_info->map_start + symtab_cmd->symoff;
 	sym_tab->str_tab = (char *) bin_info->map_start + symtab_cmd->stroff;

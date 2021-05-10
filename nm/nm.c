@@ -20,7 +20,7 @@ static void exec(const char *name, const char *path)
 	load_cmds = NULL;
 	binary_info = NULL;
 	if (!(binary_info = get_binary_info(path)) || \
-		!(load_cmds = get_load_cmds(binary_info, -1)))
+		!(load_cmds = get_load_cmds(binary_info)))
 	{
 		print_error(name, path);
 		free_mem(&binary_info, &load_cmds);

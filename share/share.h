@@ -59,13 +59,10 @@ int				parse_magic(t_binary_info *binary_info);
 t_binary_info	*get_binary_info(const char *path);
 void 			del_binary_info(t_binary_info **binary_info);
 
-t_vec			*get_load_cmds_mach_o_32(void *map_start, size_t bin_size, \
-	char cmd);
-t_vec			*get_load_cmds_mach_o_64(void *map_start, size_t bin_size, \
-	char cmd);
-t_vec			*get_load_cmds(t_binary_info *binary_info, char cmd);
-int				validate_load_cmds(t_load_cmd *lc, size_t bin_size, \
-	t_check_sizes *check);
+t_vec			*get_load_cmds_mach_o_32(void *map_start, size_t bin_size);
+t_vec			*get_load_cmds_mach_o_64(void *map_start, size_t bin_size);
+t_vec			*get_load_cmds(t_binary_info *binary_info);
+
 
 # define MAGIC_ERROR (128 + 1)
 

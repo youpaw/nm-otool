@@ -3,8 +3,6 @@ project(ft_nm_otool C)
 
 set(CMAKE_C_STANDARD 99)
 
-#add_executable(${PROJECT_NAME} main.c)
-
 set(NM_DIR "nm")
 include_directories(${NM_DIR})
 add_subdirectory(${NM_DIR})
@@ -21,4 +19,5 @@ set(LIBFT_DIR "libft")
 include_directories(${LIBFT_DIR})
 add_subdirectory(${LIBFT_DIR})
 
+#add_executable(${PROJECT_NAME} main.c)
 add_custom_target(${PROJECT_NAME} DEPENDS ft share nm otool)
