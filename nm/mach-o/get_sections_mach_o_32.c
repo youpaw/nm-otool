@@ -8,22 +8,17 @@ static int get_sects(t_segment_cmd_32 *seg, t_vec *sects)
 {
 	size_t			cnt;
 	t_section_32	*sect;
-	size_t			sect_size;
-	size_t			full_size;
 
 	sect = (t_section_32 *) ((char *) seg + sizeof(t_segment_cmd_32));
-	sect_size = sizeof(t_section_32);
-	full_size = sizeof(t_segment_cmd_32) + sect_size;
 	cnt = 0;
 	while (cnt < seg->nsects)
 	{
-		if (seg->cmdsize < full_size)
+		if (seg->cmdsize < sect->size)
 		{
 			return (1);
 		}
 		ft_vec_push(sects, &sect);
-		sect = (t_section_32 *) ((char *) sect + sect_size);
-		full_size += sect_size;
+		sect = (t_section_32 *) ((char *) sect + sizeof(t_section_32));
 		cnt++;
 	}
 	return (0);

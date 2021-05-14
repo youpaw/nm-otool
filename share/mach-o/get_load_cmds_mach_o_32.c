@@ -30,6 +30,9 @@ static int				validate_load_cmds(t_load_cmd *lc, size_t bin_size, \
 		seg_cmd = (t_segment_cmd_32 *) lc;
 		if (bin_size < (seg_cmd->fileoff + seg_cmd->filesize))
 			return (1);
+		if (seg_cmd->cmdsize < (sizeof(t_segment_cmd_32) + \
+			seg_cmd->nsects * sizeof(t_section_32)))
+			return (1);
 	}
 	check->cmds += lc->cmdsize;
 	check->full += lc->cmdsize;
