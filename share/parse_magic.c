@@ -53,6 +53,6 @@ int		parse_magic(t_binary_info *binary_info)
 		binary_info->type = (t_bin_type)n_bin;
 		return (0);
 	}
-	g_error_code = MAGIC_ERROR;
-	return (1);
+	errno = E_NT_NTVLD;
+	return (errno);
 }

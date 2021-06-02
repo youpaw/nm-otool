@@ -15,13 +15,14 @@ static int get_sects(t_segment_cmd_32 *seg, t_vec *sects)
 	{
 		if (seg->cmdsize < sect->size)
 		{
-			return (1);
+			errno = E_NT_TRMLF;
+			break ;
 		}
 		ft_vec_push(sects, &sect);
 		sect = (t_section_32 *) ((char *) sect + sizeof(t_section_32));
 		cnt++;
 	}
-	return (0);
+	return (errno);
 }
 
 t_vec		*get_sections_mach_o_32(t_vec *load_cmds)
@@ -40,7 +41,7 @@ t_vec		*get_sections_mach_o_32(t_vec *load_cmds)
 			if (get_sects((t_segment_cmd_32 *) lc, sects))
 			{
 				ft_vec_del(&sects);
-				break;
+				break ;
 			}
 		}
 		cnt++;

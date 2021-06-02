@@ -11,24 +11,27 @@ static void free_mem(t_binary_info **binary_info, t_vec **load_cmds)
 		ft_vec_del(load_cmds);
 }
 
-static void exec(const char *name, const char *path)
+static int exec(const char *name, const char *path)
 {
 	t_binary_info 		*binary_info;
 	t_vec				*load_cmds;
 	t_symtab_cmd		*symtab_cmd;
 
-	load_cmds = NULL;
-	binary_info = NULL;
-	if (!(binary_info = get_binary_info(path)) || \
-		!(load_cmds = get_load_cmds(binary_info)))
+	binary_info = get_binary_info(path);
+	if (!binary_info)
+		return (print_nt_error(name, path));
+	load_cmds = get_load_cmds(binary_info);
+	if (!load_cmds)
 	{
-		print_error(name, path);
 		free_mem(&binary_info, &load_cmds);
-		return ;
+		return (print_nt_error(name, path));
 	}
 	symtab_cmd = get_symtab_cmd(load_cmds);
-	print_symtab(symtab_cmd, load_cmds, binary_info);
+	if (symtab_cmd)
+		if (print_symtab(symtab_cmd, load_cmds, binary_info))
+			print_nt_error(name, path);
 	free_mem(&binary_info, &load_cmds);
+	return (errno);
 }
 
 int main(int ac, const char **av)
@@ -48,5 +51,5 @@ int main(int ac, const char **av)
 			index++;
 		}
 	}
-	return g_error_code;
+	return (errno);
 }

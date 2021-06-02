@@ -9,6 +9,7 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 #include <fcntl.h>
+#include "ft_error.h"
 #include "ft_vec.h"
 #define N_BIN_TYPES 1
 #define N_ARCH_TYPES 2
@@ -54,7 +55,7 @@ typedef struct segment_command_64 t_segment_cmd_64;
 typedef struct section t_section_32;
 typedef struct section_64 t_section_64;
 
-void			print_error(const char *name, const char *arg);
+int				print_nt_error(const char *name, const char *arg);
 int				parse_magic(t_binary_info *binary_info);
 t_binary_info	*get_binary_info(const char *path);
 void 			del_binary_info(t_binary_info **binary_info);
@@ -63,7 +64,9 @@ t_vec			*get_load_cmds_mach_o_32(void *map_start, size_t bin_size);
 t_vec			*get_load_cmds_mach_o_64(void *map_start, size_t bin_size);
 t_vec			*get_load_cmds(t_binary_info *binary_info);
 
-
-# define MAGIC_ERROR (128 + 1)
+# define N_NT_ERRORS 2
+# define E_NT_NTVLD (ELAST + 1)
+# define E_NT_TRMLF (ELAST + 2)
+# define E_NT_LAST (ELAST + 3)
 
 #endif //SHARE_H

@@ -40,13 +40,15 @@ int	print_symtab(t_symtab_cmd *symtab_cmd, t_vec *load_cmds, \
 	};
 	t_sym_info **sym_info_table;
 
-	if (!(sym_info_table = \
-		sym_info_handlers[binary_info->type][binary_info->arch] \
-			(binary_info, symtab_cmd, load_cmds)))
-		return (1);
-	ft_arr_quick_sort((void **) sym_info_table, symtab_cmd->nsyms, \
-					  (int (*)(const void *, const void *)) &cmp_sym_info);
-	print_sym_info_table(sym_info_table, symtab_cmd->nsyms, binary_info->arch);
-	ft_narr_del((void ***) &sym_info_table, symtab_cmd->nsyms, NULL);
-	return (0);
+	sym_info_table = sym_info_handlers[binary_info->type][binary_info->arch] \
+		(binary_info, symtab_cmd, load_cmds);
+	if (sym_info_table)
+	{
+		ft_arr_quick_sort((void **) sym_info_table, symtab_cmd->nsyms, \
+                      (int (*)(const void *, const void *)) &cmp_sym_info);
+		print_sym_info_table(sym_info_table, symtab_cmd->nsyms,
+							 binary_info->arch);
+		ft_narr_del((void ***) &sym_info_table, symtab_cmd->nsyms, NULL);
+	}
+	return (errno);
 }
