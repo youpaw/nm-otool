@@ -13,7 +13,7 @@ static int get_sects(t_segment_cmd_64 *seg, t_vec *sects)
 	cnt = 0;
 	while (cnt < seg->nsects)
 	{
-		if (seg->cmdsize < sect->size)
+		if ((seg->fileoff + seg->filesize) < (sect->offset + sect->size))
 		{
 			errno = E_NT_TRMLF;
 			break ;

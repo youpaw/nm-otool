@@ -61,18 +61,19 @@ t_sym_info			**get_sym_info_table_mach_o_32(t_binary_info *binary_info, \
 		return (NULL);
 	sym_info_table = (t_sym_info **) ft_xmalloc(sizeof(t_sym_info*) * \
 		symtab_cmd->nsyms);
-	cnt = -1;
+	cnt = 0;
 	if (!get_sym_tab(binary_info, symtab_cmd, &stab))
-		while (++cnt < symtab_cmd->nsyms)
+		while (cnt < symtab_cmd->nsyms)
 		{
 			sym_info_table[cnt] = get_sym_info(stab.tab, stab.str_tab,\
 			symtab_cmd->stroff, binary_info->file_stat.st_size, sects);
 			if (!sym_info_table[cnt])
 				break ;
 			stab.tab = (void *) ((char *) stab.tab + sizeof(t_nlist_32));
+			cnt++;
 		}
 	if (cnt < symtab_cmd->nsyms)
-		ft_narr_del((void ***) &sym_info_table, symtab_cmd->nsyms, NULL);
+		ft_narr_del((void ***) &sym_info_table, cnt, NULL);
 	ft_vec_del(&sects);
 	return (sym_info_table);
 }
