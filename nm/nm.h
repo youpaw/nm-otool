@@ -45,8 +45,6 @@ t_sym_info	**get_sym_info_table_mach_o_32(t_binary_info *binary_info, \
 	t_symtab_cmd *symtab_cmd, t_vec *load_cmds);
 t_sym_info	**get_sym_info_table_mach_o_64(t_binary_info *binary_info, \
 	t_symtab_cmd *symtab_cmd, t_vec *load_cmds);
-t_vec		*get_sections_mach_o_32(t_vec *load_cmds);
-t_vec		*get_sections_mach_o_64(t_vec *load_cmds);
 
 int 		cmp_sym_info(const t_sym_info *l, const t_sym_info *r);
 

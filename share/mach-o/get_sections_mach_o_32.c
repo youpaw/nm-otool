@@ -4,28 +4,25 @@
 
 #include "nm.h"
 
-static int get_sects(t_segment_cmd_64 *seg, t_vec *sects)
+static int get_sects(t_segment_cmd_32 *seg, t_vec *sects)
 {
 	size_t			cnt;
-	t_section_64	*sect;
+	t_section_32	*sect;
 
-	sect = (t_section_64 *) ((char *) seg + sizeof(t_segment_cmd_64));
+	sect = (t_section_32 *) ((char *) seg + sizeof(t_segment_cmd_32));
 	cnt = 0;
 	while (cnt < seg->nsects)
 	{
 		if ((seg->fileoff + seg->filesize) < (sect->offset + sect->size))
-		{
-			errno = E_NT_TRMLF;
-			break ;
-		}
+			return (print_nt_error(E_NT_TRMLF));
 		ft_vec_push(sects, &sect);
-		sect = (t_section_64 *) ((char *) sect + sizeof(t_section_64));
+		sect = (t_section_32 *) ((char *) sect + sizeof(t_section_32));
 		cnt++;
 	}
-	return (errno);
+	return (0);
 }
 
-t_vec		*get_sections_mach_o_64(t_vec *load_cmds)
+t_vec		*get_sections_mach_o_32(t_vec *load_cmds)
 {
 	t_load_cmd		*lc;
 	size_t			cnt;
@@ -36,12 +33,12 @@ t_vec		*get_sections_mach_o_64(t_vec *load_cmds)
 	while (cnt < load_cmds->size)
 	{
 		ft_vec_get_at(&lc, load_cmds, cnt);
-		if (lc->cmd == LC_SEGMENT_64)
+		if (lc->cmd == LC_SEGMENT)
 		{
-			if (get_sects((t_segment_cmd_64 *) lc, sects))
+			if (get_sects((t_segment_cmd_32 *) lc, sects))
 			{
 				ft_vec_del(&sects);
-				break;
+				break ;
 			}
 		}
 		cnt++;

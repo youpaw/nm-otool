@@ -9,10 +9,11 @@ const char *g_nt_err[N_NT_ERRORS] = {
 		"The file is truncated or malformed object."
 };
 
-int print_nt_error(const char *name, const char *arg)
+int print_nt_error(int error)
 {
+	errno = error;
 	if (errno > ELAST && errno < E_NT_LAST)
-		return (ft_print_error(name, arg, g_nt_err[errno - ELAST - 1]));
+		return (ft_print_error(g_nt_err[errno - ELAST - 1]));
 	else
-		return (ft_print_error(name, arg, NULL));
+		return (ft_print_error(NULL));
 }

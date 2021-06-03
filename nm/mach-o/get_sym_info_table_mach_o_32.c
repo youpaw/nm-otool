@@ -13,9 +13,9 @@ static t_sym_info	*get_sym_info(t_nlist_32 *sym_table, char *str_table, \
 	char			c;
 
 	if (file_size < (stroff + sym_table->n_un.n_strx))
-		errno = E_NT_TRMLF;
+		print_nt_error(E_NT_TRMLF);
 	else if (get_symbol_char(sym_table->n_type, sym_table->n_sect, sects, &c))
-		errno = E_NT_TRMLF;
+		print_nt_error(E_NT_TRMLF);
 	else
 	{
 		sym_info = (t_sym_info *) ft_xmalloc(sizeof(t_sym_info));
@@ -37,15 +37,15 @@ static int			get_sym_tab(t_binary_info *bin_info, \
 	file_size = bin_info->file_stat.st_size;
 	if (file_size < (symtab_cmd->symoff + \
 		(symtab_cmd->nsyms * sizeof(t_nlist_64))))
-		errno = E_NT_TRMLF;
+		return (print_nt_error(E_NT_TRMLF));
 	else if (file_size < (symtab_cmd->stroff + symtab_cmd->strsize))
-		errno = E_NT_TRMLF;
+		return (print_nt_error(E_NT_TRMLF));
 	else
 	{
 		sym_tab->tab = (char *) bin_info->map_start + symtab_cmd->symoff;
 		sym_tab->str_tab = (char *) bin_info->map_start + symtab_cmd->stroff;
 	}
-	return (errno);
+	return (0);
 }
 
 t_sym_info			**get_sym_info_table_mach_o_32(t_binary_info *binary_info, \

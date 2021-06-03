@@ -12,7 +12,10 @@ t_binary_info *get_binary_info(const char *path)
 
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
+	{
+		print_nt_error(errno);
 		return (NULL);
+	}
 	binary_info = ft_xmalloc(sizeof(t_binary_info));
 	stat(path, &(binary_info->file_stat));
 	binary_info->map_start = mmap(0, binary_info->file_stat.st_size, \

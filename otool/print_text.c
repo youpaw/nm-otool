@@ -1,10 +1,9 @@
 //
-// Created by Darth Butterwell on 3/8/21.
+// Created by Darth Butterwell on 6/3/21.
 //
 
-#include <stdio.h>
-#include "nm.h"
-#include "ft_arr.h"
+#include "stdio.h"
+#include "otool.h"
 
 static void print_sym_info_table(t_sym_info **sym_info_table, uint32_t nsyms,
 								 t_arch_type arch)
@@ -31,14 +30,7 @@ static void print_sym_info_table(t_sym_info **sym_info_table, uint32_t nsyms,
 	}
 }
 
-static void print_arg(void)
-{
-	if (g_ac > 2)
-		printf("\n%s:\n", g_av[g_nc]);
-}
-
-int	print_symtab(t_symtab_cmd *symtab_cmd, t_vec *load_cmds, \
-				  t_binary_info *binary_info)
+int 	print_text(t_vec *load_cmds, t_binary_info *binary_info)
 {
 	static t_sym_info	**(*sym_info_handlers[N_BIN_TYPES][N_ARCH_TYPES])\
 	(t_binary_info *, t_symtab_cmd *, t_vec *) = {

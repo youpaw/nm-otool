@@ -16,8 +16,6 @@
 #define N_MAGIC_NUMBERS 2
 #define SEGMENTS_VEC_CAPACITY 20
 
-extern int g_error_code;
-
 typedef enum	e_bin_type{
 	e_mach_o
 }				t_bin_type;
@@ -55,7 +53,7 @@ typedef struct segment_command_64 t_segment_cmd_64;
 typedef struct section t_section_32;
 typedef struct section_64 t_section_64;
 
-int				print_nt_error(const char *name, const char *arg);
+int				print_nt_error(int error);
 int				parse_magic(t_binary_info *binary_info);
 t_binary_info	*get_binary_info(const char *path);
 void 			del_binary_info(t_binary_info **binary_info);
@@ -63,6 +61,9 @@ void 			del_binary_info(t_binary_info **binary_info);
 t_vec			*get_load_cmds_mach_o_32(void *map_start, size_t bin_size);
 t_vec			*get_load_cmds_mach_o_64(void *map_start, size_t bin_size);
 t_vec			*get_load_cmds(t_binary_info *binary_info);
+
+t_vec			*get_sections_mach_o_32(t_vec *load_cmds);
+t_vec			*get_sections_mach_o_64(t_vec *load_cmds);
 
 # define N_NT_ERRORS 2
 # define E_NT_NTVLD (ELAST + 1)

@@ -15,6 +15,6 @@ t_vec *get_load_cmds(t_binary_info *binary_info)
 	segments = segment_parser_handlers[binary_info->type][binary_info->arch] \
 		(binary_info->map_start, binary_info->file_stat.st_size);
 	if (!segments)
-		errno = E_NT_TRMLF;
+		print_nt_error(E_NT_TRMLF);
 	return (segments);
 }
