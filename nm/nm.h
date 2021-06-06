@@ -7,16 +7,15 @@
 #include <mach-o/nlist.h>
 #include "share.h"
 #define DEFAULT_FILE_PATH "a.out"
-#define SECTIONS_VEC_CAPACITY 20
 #define N_SYM_MAP 3
 #define SYM_NAME_SIZE 16
 
 typedef struct	s_sym_info{
-	size_t	value;
-	uint8_t nsect;
-	uint8_t ntype;
-	char	c;
-	char	*str;
+	size_t		value;
+	uint8_t		nsect;
+	uint8_t		ntype;
+	char		c;
+	char		*str;
 }				t_sym_info;
 
 typedef struct	s_sym_map{
@@ -26,8 +25,8 @@ typedef struct	s_sym_map{
 
 typedef struct	s_sym_tab
 {
-	char *str_tab;
-	void *tab;
+	char		*str_tab;
+	void		*tab;
 }				t_sym_tab;
 
 typedef struct symtab_command t_symtab_cmd;

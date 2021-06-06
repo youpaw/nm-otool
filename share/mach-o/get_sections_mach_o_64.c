@@ -13,7 +13,7 @@ static int get_sects(t_segment_cmd_64 *seg, t_vec *sects)
 	cnt = 0;
 	while (cnt < seg->nsects)
 	{
-		if ((seg->fileoff + seg->filesize) < (sect->offset + sect->size))
+		if (seg->fileoff + seg->filesize < sect->offset + sect->size)
 			return (print_nt_error(E_NT_TRMLF));
 		ft_vec_push(sects, &sect);
 		sect = (t_section_64 *) ((char *) sect + sizeof(t_section_64));
@@ -22,7 +22,7 @@ static int get_sects(t_segment_cmd_64 *seg, t_vec *sects)
 	return (0);
 }
 
-t_vec		*get_sections_mach_o_64(t_vec *load_cmds)
+t_vec *get_sections_mach_o_64(t_vec *load_cmds)
 {
 	t_load_cmd		*lc;
 	size_t			cnt;

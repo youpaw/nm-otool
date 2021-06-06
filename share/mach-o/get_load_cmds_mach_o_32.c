@@ -17,11 +17,10 @@ static t_mach_header_32	*get_header(void *map_start, size_t bin_size, \
 }
 
 static int				validate_load_cmds(t_load_cmd *lc, size_t bin_size, \
-	t_check_sizes *check, size_t n)
+	t_check_sizes *check)
 {
 	t_segment_cmd_32 *seg_cmd;
 
-	(void) n;
 	if ((bin_size < (check->full + sizeof(t_load_cmd))) || \
 		(bin_size < (check->full + lc->cmdsize)))
 		return (1);
@@ -56,7 +55,7 @@ t_vec *get_load_cmds_mach_o_32(void *map_start, size_t bin_size)
 	n_cmds = 0;
 	while (n_cmds < header->ncmds)
 	{
-		if (validate_load_cmds(load_cmd, bin_size, &check, n_cmds))
+		if (validate_load_cmds(load_cmd, bin_size, &check))
 			break;
 		ft_vec_push(segments, &load_cmd);
 		load_cmd = (t_load_cmd *)((char *)load_cmd + load_cmd->cmdsize);

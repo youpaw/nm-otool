@@ -35,13 +35,13 @@ static void exec(const char *path)
 		free_mem(&binary_info, &load_cmds);
 		return ;
 	}
-	print_text(load_cmds, binary_info);
+	print_sects(load_cmds, binary_info);
 	free_mem(&binary_info, &load_cmds);
 }
 
 int main(int ac, const char **av)
 {
-	if (ac < 3 && !ft_strcmp(av[1], "-t"))
+	if (ac < 3 || ft_strcmp(av[1], "-t"))
 		print_usage(av[0]);
 	else
 	{

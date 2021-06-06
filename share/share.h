@@ -15,6 +15,7 @@
 #define N_ARCH_TYPES 2
 #define N_MAGIC_NUMBERS 2
 #define SEGMENTS_VEC_CAPACITY 20
+#define SECTIONS_VEC_CAPACITY 20
 
 typedef enum	e_bin_type{
 	e_mach_o
@@ -62,8 +63,11 @@ t_vec			*get_load_cmds_mach_o_32(void *map_start, size_t bin_size);
 t_vec			*get_load_cmds_mach_o_64(void *map_start, size_t bin_size);
 t_vec			*get_load_cmds(t_binary_info *binary_info);
 
-t_vec			*get_sections_mach_o_32(t_vec *load_cmds);
-t_vec			*get_sections_mach_o_64(t_vec *load_cmds);
+t_vec *get_sections_mach_o_32(t_vec *load_cmds);
+t_vec *get_sections_mach_o_64(t_vec *load_cmds);
+
+void			print_hexdump(const char *fmt, const void *data, size_t addr, \
+	size_t size);
 
 # define N_NT_ERRORS 2
 # define E_NT_NTVLD (ELAST + 1)
