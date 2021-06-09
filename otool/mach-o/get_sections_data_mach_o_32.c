@@ -9,7 +9,7 @@ static t_vec	*get_sections_data(t_vec *sects, const char *segname, \
 	const char *sectname)
 {
 	t_sect_data		sect_data;
-	t_section_32	*sect;
+	struct section	*sect;
 	size_t			cnt;
 	t_vec			*sects_data;
 
@@ -33,10 +33,10 @@ static t_vec	*get_sections_data(t_vec *sects, const char *segname, \
 	return (sects_data);
 }
 
-t_vec *get_sections_data_mach_o_32(t_vec *load_cmds)
+t_vec	*get_sections_data_mach_o_32(t_vec *load_cmds)
 {
-	t_vec		*sects;
-	t_vec		*sects_data;
+	t_vec	*sects;
+	t_vec	*sects_data;
 
 	sects = get_sections_mach_o_32(load_cmds);
 	if (sects)

@@ -5,12 +5,12 @@
 #include "nm.h"
 #include "ft_str.h"
 
-int 		cmp_sym_info(const t_sym_info *l, const t_sym_info *r)
+int	cmp_sym_info(const t_sym_info *l, const t_sym_info *r)
 {
-	int cmp;
+	int	cmp;
 
 	cmp = ft_strcmp(l->str, r->str);
 	if (!cmp)
-		return ((int) (l->value - r->value));
+		return ((int)(l->value - r->value));
 	return (cmp);
 }

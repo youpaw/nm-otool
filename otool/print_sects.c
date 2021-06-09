@@ -5,12 +5,17 @@
 #include "ft_printf.h"
 #include "otool.h"
 
-static void print_sects_data(t_vec *sections_data, t_binary_info *binary_info)
+static t_vec *(*g_sections_data_handlers[N_BIN_TYPES][N_ARCH_TYPES]) \
+	(t_vec *) = {
+	{&get_sections_data_mach_o_32, &get_sections_data_mach_o_64}
+};
+
+static void	print_sects_data(t_vec *sections_data, t_binary_info *binary_info)
 {
-	static const char *print_fmt[N_ARCH_TYPES] = \
+	static const char	*print_fmt[N_ARCH_TYPES] = \
 		{"%08zx\t", "%016zx\t"};
-	uint32_t	cnt;
-	t_sect_data	sect_data;
+	uint32_t			cnt;
+	t_sect_data			sect_data;
 
 	cnt = 0;
 	while (cnt < sections_data->size)
@@ -25,15 +30,11 @@ static void print_sects_data(t_vec *sections_data, t_binary_info *binary_info)
 	}
 }
 
-int 	print_sects(t_vec *load_cmds, t_binary_info *binary_info)
+int	print_sects(t_vec *load_cmds, t_binary_info *binary_info)
 {
-	static t_vec *(*sections_data_handlers[N_BIN_TYPES][N_ARCH_TYPES])\
-	(t_vec *) = {
-			{&get_sections_data_mach_o_32, &get_sections_data_mach_o_64}
-	};
-	t_vec *sections_data;
+	t_vec	*sections_data;
 
-	sections_data = sections_data_handlers \
+	sections_data = g_sections_data_handlers \
 		[binary_info->type][binary_info->arch](load_cmds);
 	if (sections_data)
 	{

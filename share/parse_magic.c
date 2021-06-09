@@ -5,7 +5,7 @@
 #include "share.h"
 #include "ft_mem.h"
 
-static int get_magic(t_binary_info *binary_info, int n_bin, int n_arch)
+static int	get_magic(t_binary_info *binary_info, int n_bin, int n_arch)
 {
 	int							n_magic;
 	size_t						magic_size;
@@ -28,10 +28,10 @@ static int get_magic(t_binary_info *binary_info, int n_bin, int n_arch)
 	return (1);
 }
 
-int		parse_magic(t_binary_info *binary_info)
+int	parse_magic(t_binary_info *binary_info)
 {
-	int		n_bin;
-	int		n_arch;
+	int	n_bin;
+	int	n_arch;
 
 	n_bin = 0;
 	while (n_bin < N_BIN_TYPES)
@@ -40,7 +40,7 @@ int		parse_magic(t_binary_info *binary_info)
 		while (n_arch < N_ARCH_TYPES)
 		{
 			if (!get_magic(binary_info, n_bin, n_arch))
-				break;
+				break ;
 			n_arch++;
 		}
 		if (n_arch < N_ARCH_TYPES)

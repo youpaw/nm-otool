@@ -5,7 +5,7 @@
 #include "share.h"
 #include "ft_mem.h"
 
-t_binary_info *get_binary_info(const char *path)
+t_binary_info	*get_binary_info(const char *path)
 {
 	int				fd;
 	t_binary_info	*binary_info;

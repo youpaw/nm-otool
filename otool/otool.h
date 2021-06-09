@@ -3,10 +3,10 @@
 //
 
 #ifndef OTOOL_H
-#define OTOOL_H
-#include "share.h"
+# define OTOOL_H
+# include "share.h"
 
-typedef struct	s_sect_data{
+typedef struct s_sect_data{
 	char		*sectname;
 	char		*segname;
 	size_t		size;
@@ -16,7 +16,7 @@ typedef struct	s_sect_data{
 
 int				print_sects(t_vec *load_cmds, t_binary_info *binary_info);
 
-t_vec *get_sections_data_mach_o_32(t_vec *load_cmds);
-t_vec *get_sections_data_mach_o_64(t_vec *load_cmds);
+t_vec			*get_sections_data_mach_o_32(t_vec *load_cmds);
+t_vec			*get_sections_data_mach_o_64(t_vec *load_cmds);
 
 #endif //OTOOL_H

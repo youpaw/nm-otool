@@ -6,12 +6,12 @@
 #include "ft_str.h"
 #include "ft_char.h"
 
-static char			get_section_char(uint8_t type, const char *sectname)
+static char	get_section_char(uint8_t type, const char *sectname)
 {
-	static const t_sym_map sym_map[N_SYM_MAP] = {
+	static const t_sym_map	sym_map[N_SYM_MAP] = {
 			{SECT_TEXT, 'T'}, {SECT_DATA, 'D'}, {SECT_BSS, 'B'}
 	};
-	uint8_t cnt;
+	uint8_t					cnt;
 
 	cnt = 0;
 	while (cnt < N_SYM_MAP)
@@ -29,7 +29,7 @@ static char			get_section_char(uint8_t type, const char *sectname)
 	return ('S');
 }
 
-static char			get_known_char(uint8_t type_mask)
+static char	get_known_char(uint8_t type_mask)
 {
 	if (type_mask & N_ABS)
 		return ('A');
@@ -41,16 +41,15 @@ static char			get_known_char(uint8_t type_mask)
 		return ('U');
 }
 
-int					get_symbol_char(uint8_t type, uint8_t n_sect, t_vec *sects,\
-	char *c)
+int	get_symbol_char(uint8_t type, uint8_t n_sect, const char *sectname, char *c)
 {
-	t_section_64	*sect;
 	uint8_t			type_mask;
+
 	if (n_sect != NO_SECT)
 	{
-		if (ft_vec_get_at(&sect, sects, n_sect - 1))
+		if (!sectname)
 			return (1);
-		*c = get_section_char(type, sect->sectname);
+		*c = get_section_char(type, sectname);
 	}
 	else
 	{

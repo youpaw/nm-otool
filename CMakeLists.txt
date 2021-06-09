@@ -19,6 +19,4 @@ set(LIBFT_PRINTF_DIR "printf")
 include_directories(${LIBFT_PRINTF_DIR})
 add_subdirectory(${LIBFT_PRINTF_DIR})
 
-#add_executable(${PROJECT_NAME} main.c)
-#target_link_libraries(${PROJECT_NAME} ft_printf share)
 add_custom_target(${PROJECT_NAME} DEPENDS ft_printf share nm otool)

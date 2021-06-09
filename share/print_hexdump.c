@@ -4,12 +4,12 @@
 
 #include "ft_printf.h"
 
-void		print_hexdump(const char *fmt, const void *data, size_t addr, \
+void	print_hexdump(const char *fmt, const void *data, size_t addr, \
 	size_t size)
 {
-	static const char *hex = "0123456789abcdef";
-	unsigned char *s;
-	size_t cnt;
+	static const char	*hex = "0123456789abcdef";
+	unsigned char		*s;
+	size_t				cnt;
 
 	cnt = 0;
 	s = (unsigned char *) data;
