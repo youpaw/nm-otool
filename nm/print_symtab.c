@@ -2,7 +2,7 @@
 // Created by Darth Butterwell on 3/8/21.
 //
 
-#include <stdio.h>
+#include "ft_printf.h"
 #include "nm.h"
 #include "ft_arr.h"
 
@@ -21,10 +21,10 @@ static void print_sym_info_table(t_sym_info **sym_info_table, uint32_t nsyms,
 		if (!(sym_info_table[cnt]->ntype & N_STAB))
 		{
 			if (sym_info_table[cnt]->nsect == NO_SECT)
-				printf(print_fmt[arch], "", sym_info_table[cnt]->c, \
+				ft_printf(print_fmt[arch], "", sym_info_table[cnt]->c, \
 				sym_info_table[cnt]->str);
 			else
-				printf(print_sec_fmt[arch], sym_info_table[cnt]->value, \
+				ft_printf(print_sec_fmt[arch], sym_info_table[cnt]->value, \
 				sym_info_table[cnt]->c, sym_info_table[cnt]->str);
 		}
 		cnt++;
@@ -34,7 +34,7 @@ static void print_sym_info_table(t_sym_info **sym_info_table, uint32_t nsyms,
 static void print_arg(void)
 {
 	if (g_ac > 2)
-		printf("\n%s:\n", g_av[g_nc]);
+		ft_printf("\n%s:\n", g_av[g_nc]);
 }
 
 int	print_symtab(t_symtab_cmd *symtab_cmd, t_vec *load_cmds, \
@@ -49,7 +49,7 @@ int	print_symtab(t_symtab_cmd *symtab_cmd, t_vec *load_cmds, \
 	if (!symtab_cmd)
 	{
 		print_arg();
-		printf("no symbols\n");
+		ft_printf("no symbols\n");
 		return (0);
 	}
 	sym_info_table = sym_info_handlers[binary_info->type][binary_info->arch] \

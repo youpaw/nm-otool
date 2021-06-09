@@ -2,8 +2,7 @@
 // Created by Darth Butterwell on 6/5/21.
 //
 
-#include <stdlib.h>
-#include <stdio.h>
+#include "ft_printf.h"
 
 void		print_hexdump(const char *fmt, const void *data, size_t addr, \
 	size_t size)
@@ -19,11 +18,11 @@ void		print_hexdump(const char *fmt, const void *data, size_t addr, \
 		if (!(cnt % 16))
 		{
 			if (cnt > 0)
-				printf("\n");
-			printf(fmt, addr + cnt);
+				ft_printf("\n");
+			ft_printf(fmt, addr + cnt);
 		}
-		printf("%c%c ", hex[s[cnt] >> 4], hex[s[cnt] & 15]);
+		ft_printf("%c%c ", hex[s[cnt] >> 4], hex[s[cnt] & 15]);
 		cnt++;
 	}
-	printf("\n");
+	ft_printf("\n");
 }

@@ -2,7 +2,7 @@
 // Created by Darth Butterwell on 6/3/21.
 //
 
-#include <stdio.h>
+#include "ft_printf.h"
 #include "otool.h"
 
 static void print_sects_data(t_vec *sections_data, t_binary_info *binary_info)
@@ -16,7 +16,7 @@ static void print_sects_data(t_vec *sections_data, t_binary_info *binary_info)
 	while (cnt < sections_data->size)
 	{
 		ft_vec_get_at(&sect_data, sections_data, cnt);
-		printf("Contents of (%s,%s) section\n", sect_data.segname, \
+		ft_printf("Contents of (%s,%s) section\n", sect_data.segname, \
 			sect_data.sectname);
 		print_hexdump(print_fmt[binary_info->arch], \
 			binary_info->map_start + sect_data.offset, \
@@ -37,7 +37,7 @@ int 	print_sects(t_vec *load_cmds, t_binary_info *binary_info)
 		[binary_info->type][binary_info->arch](load_cmds);
 	if (sections_data)
 	{
-		printf("%s:\n", g_av[g_nc]);
+		ft_printf("%s:\n", g_av[g_nc]);
 		print_sects_data(sections_data, binary_info);
 		ft_vec_del(&sections_data);
 		return (0);
