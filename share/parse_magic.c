@@ -7,24 +7,18 @@
 
 static int	get_magic(t_binary_info *binary_info, int n_bin, int n_arch)
 {
-	int							n_magic;
 	size_t						magic_size;
 	static const t_magic_map	magic_map[N_BIN_TYPES][N_ARCH_TYPES] = {
-			{{e_32, 4, {MH_MAGIC, MH_CIGAM}},
-			{e_64, 4, {MH_MAGIC_64, MH_CIGAM_64}}}
+			{{e_32, 4, MH_MAGIC},
+			{e_64, 4, MH_MAGIC_64}}
 	};
 
-	n_magic = 0;
-	while (n_magic < N_MAGIC_NUMBERS)
-	{
-		magic_size = magic_map[n_bin][n_arch].size;
-		if (binary_info->file_stat.st_size < magic_size)
-			return (1);
-		ft_memcpy(&binary_info->magic, binary_info->map_start, magic_size);
-		if (magic_map[n_bin][n_arch].magic[n_magic] == binary_info->magic)
-			return (0);
-		n_magic++;
-	}
+	magic_size = magic_map[n_bin][n_arch].size;
+	if (binary_info->file_stat.st_size < magic_size)
+		return (1);
+	ft_memcpy(&binary_info->magic, binary_info->map_start, magic_size);
+	if (magic_map[n_bin][n_arch].magic == binary_info->magic)
+		return (0);
 	return (1);
 }
 
@@ -53,5 +47,6 @@ int	parse_magic(t_binary_info *binary_info)
 		binary_info->type = (t_bin_type)n_bin;
 		return (0);
 	}
-	return (print_nt_error(E_NT_NTVLD));
+	errno = E_NT_NTVLD;
+	return (1);
 }

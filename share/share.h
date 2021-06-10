@@ -28,7 +28,7 @@ typedef enum e_arch_type{
 typedef struct s_magic_map{
 	enum e_arch_type	arch;
 	size_t				size;
-	uint32_t			magic[N_MAGIC_NUMBERS];
+	uint32_t			magic;
 }				t_magic_map;
 
 typedef struct s_binary_info{
@@ -46,7 +46,11 @@ typedef struct s_check_sizes{
 }				t_check_sizes;
 
 int						print_nt_error(int error);
+
 int						parse_magic(t_binary_info *binary_info);
+int 					parse_fat_header(t_binary_info *binary_info);
+int						parse_fat_header_32(t_binary_info *binary_info);
+int						parse_fat_header_64(t_binary_info *binary_info);
 t_binary_info			*get_binary_info(const char *path);
 void					del_binary_info(t_binary_info **binary_info);
 
