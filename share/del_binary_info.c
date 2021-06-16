@@ -7,7 +7,8 @@
 
 static void	free_binary_info_contents(t_binary_info *binary_info)
 {
-	munmap(binary_info->map_start, binary_info->file_stat.st_size);
+	if (binary_info->size)
+		munmap(binary_info->mapstart, binary_info->size);
 	close(binary_info->fd);
 }
 

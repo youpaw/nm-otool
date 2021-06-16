@@ -24,7 +24,7 @@ static void	print_sects_data(t_vec *sections_data, t_binary_info *binary_info)
 		ft_printf("Contents of (%s,%s) section\n", sect_data.segname, \
 			sect_data.sectname);
 		print_hexdump(print_fmt[binary_info->arch], \
-			binary_info->map_start + sect_data.offset, \
+			binary_info->mapstart + sect_data.offset, \
 				sect_data.addr, sect_data.size);
 		cnt++;
 	}

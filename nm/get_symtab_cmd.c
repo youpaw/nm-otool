@@ -1,21 +1,16 @@
 //
-// Created by Darth Butterwell on 3/8/21.
+// Created by Darth Butterwell on 6/16/21.
 //
 
 #include "nm.h"
 
-struct symtab_command	*get_symtab_cmd(t_vec *load_cmds)
-{
-	size_t				index;
-	struct load_command	*load_cmd;
+int (*g_symtab_parser_handlers[N_BIN_TYPES][N_ARCH_TYPES]) \
+	(struct symtab_command *, t_binary_info *) = {
+		{&get_symtab_cmd_mach_o_32, &get_symtab_cmd_mach_o_64}
+};
 
-	index = 0;
-	while (index < load_cmds->size)
-	{
-		ft_vec_get_at(&load_cmd, load_cmds, index);
-		if (load_cmd->cmd == LC_SYMTAB)
-			return ((struct symtab_command *)load_cmd);
-		index++;
-	}
-	return (NULL);
+int	get_symtab_cmd(struct symtab_command *symtab, t_binary_info *binary_info)
+{
+	return(g_symtab_parser_handlers[binary_info->type][binary_info->arch] \
+		(symtab, binary_info));
 }

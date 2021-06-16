@@ -27,7 +27,7 @@ static t_sym_info	*get_sym_info(t_sym_tab *stab, uint32_t stroff, \
 	char			c;
 
 	sym_table = stab->tab;
-	str_table = stab->str_tab;
+	str_table = stab->strtab;
 	if (file_size < (stroff + sym_table->n_un.n_strx))
 		print_nt_error(E_NT_TRMLF);
 	else if (get_symbol_char(sym_table->n_type, sym_table->n_sect, \
@@ -51,7 +51,7 @@ static int	get_sym_tab(t_binary_info *bin_info, \
 {
 	size_t	file_size;
 
-	file_size = bin_info->file_stat.st_size;
+	file_size = bin_info->size;
 	if (file_size < (symtab_cmd->symoff + \
 		(symtab_cmd->nsyms * sizeof(struct nlist))))
 		return (print_nt_error(E_NT_TRMLF));
@@ -59,8 +59,8 @@ static int	get_sym_tab(t_binary_info *bin_info, \
 		return (print_nt_error(E_NT_TRMLF));
 	else
 	{
-		sym_tab->tab = (char *) bin_info->map_start + symtab_cmd->symoff;
-		sym_tab->str_tab = (char *) bin_info->map_start + symtab_cmd->stroff;
+		sym_tab->tab = (char *) bin_info->mapstart + symtab_cmd->symoff;
+		sym_tab->strtab = (char *) bin_info->mapstart + symtab_cmd->stroff;
 	}
 	return (0);
 }
@@ -77,7 +77,7 @@ static t_sym_info	**get_sym_info_table(t_binary_info *binary_info, \
 	while (cnt < symtab_cmd->nsyms)
 	{
 		sym_info_table[cnt] = get_sym_info(stab, symtab_cmd->stroff, \
-			binary_info->file_stat.st_size, sects);
+			binary_info->size, sects);
 		if (!sym_info_table[cnt])
 			break ;
 		stab->tab = (void *)((char *) stab->tab + sizeof(struct nlist));
@@ -95,7 +95,7 @@ t_sym_info	**get_sym_info_table_mach_o_32(t_binary_info *binary_info, \
 	t_sym_tab	stab;
 	t_vec		*sects;
 
-	sects = get_sections_mach_o_32(load_cmds);
+	sects = get_sections_mach_o_32(load_cmds, binary_info);
 	if (!sects)
 		return (NULL);
 	sym_info_table = NULL;

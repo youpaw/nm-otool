@@ -15,21 +15,23 @@ static void	free_mem(t_binary_info **binary_info, t_vec **load_cmds)
 static void	exec(const char *path)
 {
 	t_binary_info			*binary_info;
-	t_vec					*load_cmds;
-	struct symtab_command	*symtab_cmd;
+	t_vec					*segments;
+	struct symtab_command	symtab;
 
 	binary_info = get_binary_info(path);
 	if (!binary_info)
 		return ;
-	load_cmds = get_load_cmds(binary_info);
-	if (!load_cmds)
+	segments = get_segments(binary_info);
+	if (!segments)
 	{
-		free_mem(&binary_info, &load_cmds);
+		free_mem(&binary_info, &segments);
 		return ;
 	}
-	symtab_cmd = get_symtab_cmd(load_cmds);
-	print_symtab(symtab_cmd, load_cmds, binary_info);
-	free_mem(&binary_info, &load_cmds);
+	if (get_symtab_cmd(&symtab, binary_info))
+		print_symtab(&symtab, segments, binary_info);
+	else
+		print_symtab(NULL, segments, binary_info);
+	free_mem(&binary_info, &segments);
 }
 
 int	main(int ac, const char **av)

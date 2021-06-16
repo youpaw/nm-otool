@@ -5,16 +5,16 @@
 #include "share.h"
 
 t_vec *(*g_segment_parser_handlers[N_BIN_TYPES][N_ARCH_TYPES]) \
-		(void *, size_t) = {
-		{&get_load_cmds_mach_o_32, &get_load_cmds_mach_o_64}
+	(t_binary_info *) = {
+		{&get_segments_mach_o_32, &get_segments_mach_o_64}
 };
 
-t_vec	*get_load_cmds(t_binary_info *binary_info)
+t_vec	*get_segments(t_binary_info *binary_info)
 {
 	t_vec	*segments;
 
 	segments = g_segment_parser_handlers[binary_info->type][binary_info->arch] \
-		(binary_info->map_start, binary_info->file_stat.st_size);
+		(binary_info);
 	if (!segments)
 		print_nt_error(E_NT_TRMLF);
 	return (segments);

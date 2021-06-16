@@ -29,7 +29,7 @@ static void	exec(const char *path)
 	binary_info = get_binary_info(path);
 	if (!binary_info)
 		return ;
-	load_cmds = get_load_cmds(binary_info);
+	load_cmds = get_segments(binary_info);
 	if (!load_cmds)
 	{
 		free_mem(&binary_info, &load_cmds);

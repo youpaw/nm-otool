@@ -14,12 +14,17 @@ static int	get_magic(t_binary_info *binary_info, int n_bin, int n_arch)
 	};
 
 	magic_size = magic_map[n_bin][n_arch].size;
-	if (binary_info->file_stat.st_size < magic_size)
+	if (binary_info->archsize < magic_size)
 		return (1);
-	ft_memcpy(&binary_info->magic, binary_info->map_start, magic_size);
+	ft_memcpy(&binary_info->magic, binary_info->mapstart, magic_size);
 	if (magic_map[n_bin][n_arch].magic == binary_info->magic)
-		return (0);
-	return (1);
+		binary_info->swap = 0;
+	else if (ft_swap_uint32(magic_map[n_bin][n_arch].magic) == \
+		binary_info->magic)
+		binary_info->swap = 1;
+	else
+		return (1);
+	return (0);
 }
 
 int	parse_magic(t_binary_info *binary_info)
@@ -30,13 +35,10 @@ int	parse_magic(t_binary_info *binary_info)
 	n_bin = 0;
 	while (n_bin < N_BIN_TYPES)
 	{
-		n_arch = 0;
-		while (n_arch < N_ARCH_TYPES)
-		{
+		n_arch = -1;
+		while (++n_arch < N_ARCH_TYPES)
 			if (!get_magic(binary_info, n_bin, n_arch))
 				break ;
-			n_arch++;
-		}
 		if (n_arch < N_ARCH_TYPES)
 			break ;
 		n_bin++;
@@ -45,6 +47,7 @@ int	parse_magic(t_binary_info *binary_info)
 	{
 		binary_info->arch = (t_arch_type)n_arch;
 		binary_info->type = (t_bin_type)n_bin;
+		errno = 0;
 		return (0);
 	}
 	errno = E_NT_NTVLD;
