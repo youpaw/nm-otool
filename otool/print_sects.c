@@ -6,7 +6,7 @@
 #include "otool.h"
 
 static t_vec *(*g_sections_data_handlers[N_BIN_TYPES][N_ARCH_TYPES]) \
-	(t_vec *) = {
+	(t_vec *, t_binary_info *binary_info) = {
 	{&get_sections_data_mach_o_32, &get_sections_data_mach_o_64}
 };
 
@@ -35,7 +35,7 @@ int	print_sects(t_vec *load_cmds, t_binary_info *binary_info)
 	t_vec	*sections_data;
 
 	sections_data = g_sections_data_handlers \
-		[binary_info->type][binary_info->arch](load_cmds);
+		[binary_info->type][binary_info->arch](load_cmds, binary_info);
 	if (sections_data)
 	{
 		ft_printf("%s:\n", g_av[g_nc]);

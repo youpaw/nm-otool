@@ -7,7 +7,7 @@
 
 int	get_header_mach_o_32(struct mach_header *header, t_binary_info *binary_info)
 {
-	struct mach_header *header_ptr;
+	struct mach_header	*header_ptr;
 
 	if (binary_info->archsize < sizeof(struct mach_header))
 		return (1);

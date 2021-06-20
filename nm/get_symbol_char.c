@@ -16,7 +16,7 @@ static char	get_section_char(uint8_t type, const char *sectname)
 	cnt = 0;
 	while (cnt < N_SYM_MAP)
 	{
-		if (!ft_strncmp(sym_map[cnt].sectname, sectname, SYM_NAME_SIZE))
+		if (!ft_strncmp(sym_map[cnt].sectname, sectname, SECTNAME_SIZE))
 		{
 			if (!(type & N_EXT))
 				return ((char) ft_tolower(sym_map[cnt].sym));

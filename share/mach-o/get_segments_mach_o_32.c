@@ -5,7 +5,7 @@
 #include "share.h"
 #include "ft_mem.h"
 
-static void extract_segment_data(struct segment_command *seg, \
+static void	extract_segment_data(struct segment_command *seg, \
 	struct segment_command *seg_ptr)
 {
 	seg->cmdsize = seg_ptr->cmdsize;
@@ -44,19 +44,19 @@ static int	get_segment(struct segment_command *seg, \
 	return (0);
 }
 
-static t_vec	*extract_segments(struct mach_header *header, \
+static t_vec	*extract_segments(uint32_t ncmds, uint32_t sizeofcmds, \
 	t_binary_info *bin_info)
 {
 	struct load_command		ld_cmd;
 	t_seg_cmd_32			seg_cmd;
 	t_vec					*segments;
-	size_t					n_cmds;
+	size_t					cnt;
 	size_t					mapoff;
 
 	segments = ft_vec_new(SEGMENTS_VEC_CAPACITY, sizeof(t_seg_cmd_32), NULL);
 	mapoff = sizeof(struct mach_header);
-	n_cmds = -1;
-	while (++n_cmds < header->ncmds)
+	cnt = -1;
+	while (++cnt < ncmds)
 	{
 		if (get_load_cmd(&ld_cmd, bin_info, mapoff))
 			break ;
@@ -64,11 +64,12 @@ static t_vec	*extract_segments(struct mach_header *header, \
 		{
 			if (get_segment(&seg_cmd.segment, bin_info, mapoff))
 				break ;
+			seg_cmd.mapoff = mapoff;
 			ft_vec_push(segments, &seg_cmd);
 		}
 		mapoff += ld_cmd.cmdsize;
 	}
-	if (n_cmds < header->ncmds || mapoff != header->sizeofcmds)
+	if (cnt < ncmds || (mapoff - sizeof(struct mach_header)) != sizeofcmds)
 		ft_vec_del(&segments);
 	return (segments);
 }
@@ -79,5 +80,5 @@ t_vec	*get_segments_mach_o_32(t_binary_info *binary_info)
 
 	if (get_header_mach_o_32(&header, binary_info))
 		return (NULL);
-	return (extract_segments(&header, binary_info));
+	return (extract_segments(header.ncmds, header.sizeofcmds, binary_info));
 }

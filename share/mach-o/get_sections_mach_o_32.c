@@ -5,12 +5,12 @@
 #include "nm.h"
 #include "ft_mem.h"
 
-static int	get_section(struct section *sect, t_binary_info *binary_info, \
+static void	get_section(struct section *sect, t_binary_info *binary_info, \
 	size_t mapoff)
 {
-	struct section *sect_ptr;
+	struct section	*sect_ptr;
 
-	sect_ptr = (struct section *)binary_info->mapstart + mapoff;
+	sect_ptr = (struct section *)((char *)binary_info->mapstart + mapoff);
 	ft_memcpy(sect->sectname, sect_ptr->sectname, SECTNAME_SIZE);
 	ft_memcpy(sect->segname, sect_ptr->segname, SEGNAME_SIZE);
 	if (binary_info->swap)
@@ -49,7 +49,7 @@ static int	extract_sections(t_seg_cmd_32 *seg_cmd, \
 	return (0);
 }
 
-t_vec *get_sections_mach_o_32(t_vec *segments, t_binary_info *binary_info)
+t_vec	*get_sections_mach_o_32(t_vec *segments, t_binary_info *binary_info)
 {
 	t_seg_cmd_32	segment;
 	size_t			cnt;

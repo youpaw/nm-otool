@@ -32,9 +32,9 @@ static int	get_magic(t_binary_info *binary_info, int n_arch)
 
 int	parse_header_fat(t_binary_info *binary_info)
 {
-	static int (*fat_parser[N_ARCH_TYPES])(t_binary_info *) = \
-	{&parse_header_fat_32, &parse_header_fat_64 };
-	int	n_arch;
+	static	int	(*fat_parser[N_ARCH_TYPES])(t_binary_info *) = \
+		{&parse_header_fat_32, &parse_header_fat_64};
+	int			n_arch;
 
 	n_arch = 0;
 	while (n_arch < N_ARCH_TYPES)

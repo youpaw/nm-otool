@@ -5,12 +5,12 @@
 #include "nm.h"
 #include "ft_mem.h"
 
-static int	get_section(struct section_64 *sect, t_binary_info *binary_info, \
+static void	get_section(struct section_64 *sect, t_binary_info *binary_info, \
 	size_t mapoff)
 {
-	struct section_64 *sect_ptr;
+	struct section_64	*sect_ptr;
 
-	sect_ptr = (struct section_64 *)binary_info->mapstart + mapoff;
+	sect_ptr = (struct section_64 *)((char *)binary_info->mapstart + mapoff);
 	ft_memcpy(sect->sectname, sect_ptr->sectname, SECTNAME_SIZE);
 	ft_memcpy(sect->segname, sect_ptr->segname, SEGNAME_SIZE);
 	if (binary_info->swap)
@@ -34,7 +34,7 @@ static int	extract_sections(t_seg_cmd_64 *seg_cmd, \
 	size_t				mapoff;
 	size_t				nsect;
 
-	mapoff = seg_cmd->mapoff + sizeof(struct segment_command);
+	mapoff = seg_cmd->mapoff + sizeof(struct segment_command_64);
 	nsect = 0;
 	while (nsect < seg_cmd->segment.nsects)
 	{
@@ -43,13 +43,13 @@ static int	extract_sections(t_seg_cmd_64 *seg_cmd, \
 			sect.offset + sect.size)
 			return (print_nt_error(E_NT_TRMLF));
 		ft_vec_push(sects, &sect);
-		mapoff += sizeof(struct section);
+		mapoff += sizeof(struct section_64);
 		nsect++;
 	}
 	return (0);
 }
 
-t_vec *get_sections_mach_o_64(t_vec *segments, t_binary_info *binary_info)
+t_vec	*get_sections_mach_o_64(t_vec *segments, t_binary_info *binary_info)
 {
 	t_seg_cmd_64	segment;
 	size_t			cnt;

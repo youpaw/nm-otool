@@ -11,6 +11,6 @@ int (*g_symtab_parser_handlers[N_BIN_TYPES][N_ARCH_TYPES]) \
 
 int	get_symtab_cmd(struct symtab_command *symtab, t_binary_info *binary_info)
 {
-	return(g_symtab_parser_handlers[binary_info->type][binary_info->arch] \
+	return (g_symtab_parser_handlers[binary_info->type][binary_info->arch] \
 		(symtab, binary_info));
 }

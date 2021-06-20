@@ -35,7 +35,7 @@ typedef struct s_magic_map{
 
 typedef struct s_binary_info{
 	int					fd;
-	char 				swap;
+	char				swap;
 	size_t				size;
 	size_t				archoff;
 	size_t				archsize;
@@ -62,7 +62,7 @@ int						print_nt_error(int error);
 int						parse_magic(t_binary_info *binary_info);
 int						get_header_fat(struct fat_header *fat_header, \
 	t_binary_info *binary_info);
-int 					parse_header_fat(t_binary_info *binary_info);
+int						parse_header_fat(t_binary_info *binary_info);
 int						parse_header_fat_32(t_binary_info *binary_info);
 int						parse_header_fat_64(t_binary_info *binary_info);
 

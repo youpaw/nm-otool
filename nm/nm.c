@@ -27,7 +27,7 @@ static void	exec(const char *path)
 		free_mem(&binary_info, &segments);
 		return ;
 	}
-	if (get_symtab_cmd(&symtab, binary_info))
+	if (!get_symtab_cmd(&symtab, binary_info))
 		print_symtab(&symtab, segments, binary_info);
 	else
 		print_symtab(NULL, segments, binary_info);

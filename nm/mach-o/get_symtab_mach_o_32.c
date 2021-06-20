@@ -5,14 +5,14 @@
 #include "nm.h"
 #include "ft_mem.h"
 
-static int get_symtab(struct symtab_command *symtab, \
+static int	get_symtab(struct symtab_command *symtab, \
 	t_binary_info *bin_info, size_t mapoff)
 {
 	struct symtab_command	*symtab_ptr;
 
 	if (bin_info->archsize < sizeof(struct symtab_command) + mapoff)
 		return (1);
-	symtab_ptr = (struct symtab_command *)bin_info->mapstart + mapoff;
+	symtab_ptr = (struct symtab_command *)((char *)bin_info->mapstart + mapoff);
 	if (bin_info->swap)
 	{
 		symtab->symoff = ft_swap_uint32(symtab_ptr->symoff);
@@ -30,7 +30,7 @@ static int get_symtab(struct symtab_command *symtab, \
 	return (0);
 }
 
-int get_symtab_cmd_mach_o_32(struct symtab_command *symtab, \
+int	get_symtab_cmd_mach_o_32(struct symtab_command *symtab, \
 	t_binary_info *binary_info)
 {
 	struct mach_header	header;
