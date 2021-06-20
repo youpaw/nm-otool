@@ -2,7 +2,7 @@
 // Created by Darth Butterwell on 5/3/21.
 //
 
-#include "nm.h"
+#include "share.h"
 #include "ft_mem.h"
 
 static void	get_section(struct section *sect, t_binary_info *binary_info, \
