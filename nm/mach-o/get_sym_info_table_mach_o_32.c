@@ -22,7 +22,7 @@ static int	get_sectname(char sectname[SECTNAME_SIZE], uint8_t n_sect, \
 }
 
 static t_sym_info	*get_sym_info(struct nlist *nlist, char *strtab, \
-	t_vec *sects)
+	t_vec *sects, size_t strsize)
 {
 	t_sym_info	*sym_info;
 	char		sectname[SECTNAME_SIZE];
@@ -39,14 +39,17 @@ static t_sym_info	*get_sym_info(struct nlist *nlist, char *strtab, \
 		sym_info->nsect = nlist->n_sect;
 		sym_info->ntype = nlist->n_type;
 		sym_info->c = c;
-		sym_info->str = strtab + nlist->n_un.n_strx;
+		if (strsize < nlist->n_un.n_strx)
+			sym_info->str = BAD_STRING_INDEX;
+		else
+			sym_info->str = strtab + nlist->n_un.n_strx;
 		return (sym_info);
 	}
 	return (NULL);
 }
 
 static t_sym_info	**get_sym_info_table(t_vec *sects, t_vec *nlists, \
-	char *strtab)
+	char *strtab, size_t strsize)
 {
 	struct nlist	nlist;
 	t_sym_info		**sym_info_table;
@@ -58,7 +61,7 @@ static t_sym_info	**get_sym_info_table(t_vec *sects, t_vec *nlists, \
 	while (cnt < nlists->size)
 	{
 		ft_vec_get_at(&nlist, nlists, cnt);
-		sym_info_table[cnt] = get_sym_info(&nlist, strtab, sects);
+		sym_info_table[cnt] = get_sym_info(&nlist, strtab, sects, strsize);
 		if (!sym_info_table[cnt])
 			break ;
 		cnt++;
@@ -85,7 +88,7 @@ t_sym_info	**get_sym_info_table_mach_o_32(t_binary_info *binary_info, \
 		print_nt_error(E_NT_TRMLF);
 	else if (nlists)
 		sym_info_table = get_sym_info_table(sects, nlists, \
-			binary_info->mapstart + symtab_cmd->stroff);
+			binary_info->mapstart + symtab_cmd->stroff, symtab_cmd->strsize);
 	ft_vec_del(&sects);
 	ft_vec_del(&nlists);
 	return (sym_info_table);

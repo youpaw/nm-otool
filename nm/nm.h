@@ -7,6 +7,7 @@
 # include <mach-o/nlist.h>
 # include "share.h"
 # define DEFAULT_FILE_PATH "a.out"
+# define BAD_STRING_INDEX "bad string index"
 # define NLISTS_VEC_CAPACITY 20
 # define N_SYM_MAP 3
 
