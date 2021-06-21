@@ -2,6 +2,6 @@ main.c
 test
 cmake-build-debug
 .idea
-./obj
+obj
 ft_nm
 ft_otool

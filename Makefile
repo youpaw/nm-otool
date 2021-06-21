@@ -1,4 +1,4 @@
-INC_DIRS		:= ./share
+SHARE_INC_DIRS	:= ./share
 NM_INC_DIRS		:= ./nm
 OTOOL_INC_DIRS	:= ./otool
 
@@ -8,67 +8,69 @@ PRINTF_INC_DIRS	:= src
 LIBFT_DIR		:= $(PRINTF_DIR)/libft
 LIBFT_INC_DIRS	:= env avl char file graph hash_map list math memory num \
 					string vector arr optparse regex error .
-INC_FLAGS		:= $(addprefix -I ,$(INC_DIRS)) \
-					$(addprefix -I , \
-						$(addprefix $(LIBFT_DIR)/,$(LIBFT_INC_DIRS))) \
-					$(addprefix -I , \
-                    	$(addprefix $(PRINTF_DIR)/,$(PRINTF_INC_DIRS)))
-NM_INC_FLAGS	:= $(addprefix -I ,$(INC_DIRS)) \
-					$(addprefix -I ,$(NM_INC_DIRS)) \
-					$(addprefix -I , \
-						$(addprefix $(LIBFT_DIR)/,$(LIBFT_INC_DIRS))) \
-					$(addprefix -I , \
-						$(addprefix $(PRINTF_DIR)/,$(PRINTF_INC_DIRS)))
-OTOOL_INC_FLAGS	:= $(addprefix -I ,$(INC_DIRS)) \
-					$(addprefix -I ,$(OTOOL_INC_DIRS)) \
-					$(addprefix -I , \
-						$(addprefix $(LIBFT_DIR)/,$(LIBFT_INC_DIRS))) \
-					$(addprefix -I , \
-						$(addprefix $(PRINTF_DIR)/,$(PRINTF_INC_DIRS)))
 
-SRC_DIR			:= ./src
-SRCS			:= share/del_binary_info.c						\
-					share/fat/get_header_fat.c					\
-					share/fat/parse_header_fat.c				\
-					share/fat/parse_header_fat_32.c				\
-					share/fat/parse_header_fat_64.c				\
-					share/get_binary_info.c						\
-					share/get_segments.c						\
-					share/mach-o/get_header_mach_o_32.c			\
-					share/mach-o/get_header_mach_o_64.c			\
-					share/mach-o/get_load_cmd_mach_o.c			\
-					share/mach-o/get_sections_mach_o_32.c		\
-					share/mach-o/get_sections_mach_o_64.c		\
-					share/mach-o/get_segments_mach_o_32.c		\
-					share/mach-o/get_segments_mach_o_64.c		\
-					share/parse_magic.c							\
-					share/print_hexdump.c						\
-					share/print_nt_error.c
+FTPRINTF_INC_FLAGS := $(addprefix -I , \
+							$(addprefix $(LIBFT_DIR)/,$(LIBFT_INC_DIRS))) \
+						$(addprefix -I , \
+							$(addprefix $(PRINTF_DIR)/,$(PRINTF_INC_DIRS)))
+
+SHARE_INC_FLAGS	:= $(addprefix -I ,$(SHARE_INC_DIRS)) $(FTPRINTF_INC_FLAGS)
+NM_INC_FLAGS	:= $(SHARE_INC_FLAGS) $(FTPRINTF_INC_FLAGS) \
+					$(addprefix -I ,$(NM_INC_DIRS))
+OTOOL_INC_FLAGS	:= $(SHARE_INC_FLAGS) $(FTPRINTF_INC_FLAGS) \
+					$(addprefix -I ,$(OTOOL_INC_DIRS))
 
 
-NM_SRCS			:= nm/cmp_sym_info.c							\
-					nm/get_symbol_char.c						\
-					nm/get_symtab_cmd.c							\
-					nm/mach-o/get_nlists_mach_o_32.c			\
-					nm/mach-o/get_nlists_mach_o_64.c			\
-					nm/mach-o/get_sym_info_table_mach_o_32.c	\
-					nm/mach-o/get_sym_info_table_mach_o_64.c	\
-					nm/mach-o/get_symtab_mach_o_32.c			\
-					nm/mach-o/get_symtab_mach_o_64.c			\
-					nm/nm.c										\
-					nm/print_symtab.c
+SHARE_SRC_DIR	:= ./share
+SHARE_SRCS		:= del_binary_info.c				\
+					fat/get_header_fat.c			\
+					fat/parse_header_fat.c			\
+					fat/parse_header_fat_32.c		\
+					fat/parse_header_fat_64.c		\
+					get_binary_info.c				\
+					get_segments.c					\
+					mach-o/get_header_mach_o_32.c	\
+					mach-o/get_header_mach_o_64.c	\
+					mach-o/get_load_cmd_mach_o.c	\
+					mach-o/get_sections_mach_o_32.c	\
+					mach-o/get_sections_mach_o_64.c	\
+					mach-o/get_segments_mach_o_32.c	\
+					mach-o/get_segments_mach_o_64.c	\
+					parse_magic.c					\
+					print_hexdump.c					\
+					print_nt_error.c
 
-OTOOL_SRCS		:= otool/mach-o/get_sections_data_mach_o_32.c	\
-					otool/mach-o/get_sections_data_mach_o_64.c	\
-					otool/otool.c								\
-					otool/print_sects.c
+NM_SRC_DIR	:= ./nm
+NM_SRCS			:= cmp_sym_info.c							\
+					get_symbol_char.c						\
+					get_symtab_cmd.c						\
+					mach-o/get_nlists_mach_o_32.c			\
+					mach-o/get_nlists_mach_o_64.c			\
+					mach-o/get_sym_info_table_mach_o_32.c	\
+					mach-o/get_sym_info_table_mach_o_64.c	\
+					mach-o/get_symtab_mach_o_32.c			\
+					mach-o/get_symtab_mach_o_64.c			\
+					nm.c									\
+					print_symtab.c
+
+OTOOL_SRC_DIR	:= ./otool
+OTOOL_SRCS		:= mach-o/get_sections_data_mach_o_32.c		\
+					mach-o/get_sections_data_mach_o_64.c	\
+					otool.c									\
+					print_sects.c
 
 OBJ_DIR			:= ./obj
-OBJS			:= $(addprefix $(OBJ_DIR)/,$(SRCS:.c=.o))
-NM_OBJS			:= $(addprefix $(OBJ_DIR)/,$(NM_SRCS:.c=.o))
-OTOOL_OBJS		:= $(addprefix $(OBJ_DIR)/,$(OTOOL_SRCS:.c=.o))
 
-DEPS    		:= $(OBJS:.o=.d)
+SHARE_OBJ_DIR	:= $(OBJ_DIR)/share
+SHARE_OBJS		:= $(addprefix $(SHARE_OBJ_DIR)/,$(SHARE_SRCS:.c=.o))
+
+NM_OBJ_DIR		:= $(OBJ_DIR)/nm
+NM_OBJS			:= $(addprefix $(NM_OBJ_DIR)/,$(NM_SRCS:.c=.o))
+
+OTOOL_OBJ_DIR	:= $(OBJ_DIR)/otool
+OTOOL_OBJS		:= $(addprefix $(OTOOL_OBJ_DIR)/,$(OTOOL_SRCS:.c=.o))
+
+SHARE_DEPS		:= $(SHARE_OBJS:.o=.d)
 NM_DEPS			:= $(NM_OBJS:.o=.d)
 OTOOL_DEPS		:= $(OTOOL_OBJS:.o=.d)
 
@@ -84,26 +86,35 @@ OTOOL_NAME		:= ft_otool
 
 all: $(NAME)
 
-$(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)/nm/mach-o
-	mkdir -p $(OBJ_DIR)/otool/mach-o
+$(SHARE_OBJ_DIR):
 	mkdir -p $(OBJ_DIR)/share/fat
 	mkdir -p $(OBJ_DIR)/share/mach-o
 
-$(OBJ_DIR)/%.o: %.c
-	gcc $(CFLAGS) $(INC_FLAGS) -o $@ -c $<
+$(NM_OBJ_DIR):
+	mkdir -p $(OBJ_DIR)/nm/mach-o
 
--include $(DEPS)
+$(OTOOL_OBJ_DIR):
+	mkdir -p $(OBJ_DIR)/otool/mach-o
+
+$(SHARE_OBJ_DIR)/%.o: $(SHARE_SRC_DIR)/%.c
+	gcc $(CFLAGS) $(SHARE_INC_FLAGS) -o $@ -c $<
+-include $(SHARE_DEPS)
+
+$(NM_OBJ_DIR)/%.o: $(NM_SRC_DIR)/%.c
+	gcc $(CFLAGS) $(SHARE_INC_FLAGS) $(NM_INC_FLAGS) -o $@ -c $<
 -include $(NM_DEPS)
+
+$(OTOOL_OBJ_DIR)/%.o: $(OTOOL_SRC_DIR)/%.c
+	gcc $(CFLAGS) $(SHARE_INC_FLAGS) $(OTOOL_INC_FLAGS) -o $@ -c $<
 -include $(OTOOL_DEPS)
 
-$(NM_NAME): $(NM_OBJS)
-	gcc -o $(NM_NAME) $(OBJS) $(NM_OBJS) $(LFLAGS)
+$(NM_NAME): $(SHARE_OBJ_DIR) $(SHARE_OBJS) $(NM_OBJ_DIR) $(NM_OBJS) | lib
+	gcc -o $(NM_NAME) $(SHARE_OBJS) $(NM_OBJS) $(LFLAGS)
 
-$(OTOOL_NAME): $(OTOOL_OBJS)
-	gcc -o $(OTOOL_NAME) $(OBJS) $(OTOOL_OBJS) $(LFLAGS)
+$(OTOOL_NAME): $(SHARE_OBJ_DIR) $(SHARE_OBJS) $(OTOOL_OBJ_DIR) $(OTOOL_OBJS) | lib
+	gcc -o $(OTOOL_NAME) $(SHARE_OBJS) $(OTOOL_OBJS) $(LFLAGS)
 
-$(NAME): $(OBJ_DIR) $(OBJS) $(NM_NAME) $(OTOOL_NAME) | lib
+$(NAME): $(NM_NAME) $(OTOOL_NAME)
 
 lib:
 	make -C $(PRINTF_DIR)
