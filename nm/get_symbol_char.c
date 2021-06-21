@@ -31,12 +31,12 @@ static char	get_section_char(uint8_t type, const char *sectname)
 
 static char	get_known_char(uint8_t type_mask)
 {
-	if (type_mask & N_ABS)
-		return ('A');
+	if (type_mask & N_INDR)
+		return ('I');
 	else if (type_mask & N_PBUD)
 		return ('Z');
-	else if (type_mask & N_INDR)
-		return ('i');
+	else if (type_mask & N_ABS)
+		return ('A');
 	else
 		return ('U');
 }

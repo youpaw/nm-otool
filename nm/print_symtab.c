@@ -11,6 +11,14 @@ t_sym_info **(*g_sym_info_handlers[N_BIN_TYPES][N_ARCH_TYPES]) \
 		{&get_sym_info_table_mach_o_32, &get_sym_info_table_mach_o_64}
 };
 
+static void	print_indirect_sym(t_sym_info *isym, t_arch_type arch)
+{
+	static const char	*print_ifmt[N_ARCH_TYPES] = \
+		{"%8s %c %s (indirect for %s)\n", "%16s %c %s (indirect for %s)\n"};
+
+	ft_printf(print_ifmt[arch], "", isym->c, isym->str, isym->str);
+}
+
 static void	print_sym_info_table(t_sym_info **sym_info_table, uint32_t nsyms, \
 	t_arch_type arch)
 {
@@ -25,7 +33,9 @@ static void	print_sym_info_table(t_sym_info **sym_info_table, uint32_t nsyms, \
 	{
 		if (!(sym_info_table[cnt]->ntype & N_STAB))
 		{
-			if (sym_info_table[cnt]->nsect == NO_SECT)
+			if (sym_info_table[cnt]->c == 'I')
+				print_indirect_sym(sym_info_table[cnt], arch);
+			else if (sym_info_table[cnt]->nsect == NO_SECT)
 				ft_printf(print_fmt[arch], "", sym_info_table[cnt]->c, \
 				sym_info_table[cnt]->str);
 			else
